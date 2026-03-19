@@ -1,0 +1,76 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const featureSelectorVariants = tv({
+	base: 'group relative flex w-full cursor-pointer items-start gap-4 rounded-xl border p-4 text-left transition-colors',
+	variants: {
+		variant: {
+			default:
+				'border-zinc-200 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700',
+		},
+	},
+	defaultVariants: {
+		variant: 'default',
+	},
+});
+
+interface Props extends Omit<HTMLAttributes<'input'>, 'type' | 'class'> {
+	class?: string;
+	title: string;
+	description: string;
+	icon?: string;
+	name?: string;
+	id?: string;
+	checked?: boolean;
+}
+
+const {
+	class: className,
+	title,
+	description,
+	icon,
+	name = 'feature-selector',
+	id,
+	checked,
+	...rest
+} = Astro.props;
+
+const uniqueId = id || `feature-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<label class={featureSelectorVariants({ class: className })} for={uniqueId}>
+	<input
+		type="radio"
+		id={uniqueId}
+		name={name}
+		class="peer sr-only"
+		checked={checked}
+		{...rest}
+	/>
+
+	<!-- Background / Border active states based on peer-checked -->
+	<div class="absolute inset-0 rounded-xl border-2 border-transparent transition-colors peer-checked:border-zinc-900 dark:peer-checked:border-zinc-100 peer-checked:bg-zinc-50/50 dark:peer-checked:bg-zinc-800/20 pointer-events-none -z-10"></div>
+
+	{
+		icon && (
+			<div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600 transition-colors peer-checked:bg-zinc-900 peer-checked:text-white dark:bg-zinc-800 dark:text-zinc-400 dark:peer-checked:bg-zinc-100 dark:peer-checked:text-zinc-900">
+				<Icon name={icon} class="h-5 w-5" />
+			</div>
+		)
+	}
+
+	<div class="flex-1">
+		<h4 class="font-medium text-zinc-700 transition-colors peer-checked:text-zinc-900 dark:text-zinc-300 dark:peer-checked:text-zinc-100">
+			{title}
+		</h4>
+		<p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{description}</p>
+	</div>
+
+	<div class="mt-1.5 flex pointer-events-none">
+		<div class="relative flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all mt-0.5 border-zinc-300 bg-white peer-checked:border-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:peer-checked:border-zinc-100 group-has-[input:checked]:border-zinc-900 dark:group-has-[input:checked]:border-zinc-100">
+			<div class="h-2.5 w-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 opacity-0 scale-50 transition-all group-has-[input:checked]:opacity-100 group-has-[input:checked]:scale-100"></div>
+		</div>
+	</div>
+</label>

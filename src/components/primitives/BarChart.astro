@@ -1,0 +1,44 @@
+---
+import Chart from './Chart.astro';
+
+interface Props {
+	class?: string;
+	title?: string;
+}
+
+const { class: className, title = 'Monthly Revenue' } = Astro.props;
+
+const data = {
+	labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+	datasets: [
+		{
+			label: 'Revenue',
+			data: [12000, 19000, 15000, 25000, 22000, 30000],
+			backgroundColor: '#71717a',
+			borderRadius: 4,
+			barPercentage: 0.6,
+		},
+	],
+};
+
+const options = {
+	plugins: {
+		legend: {
+			display: false,
+		},
+	},
+	scales: {
+		x: {
+			grid: { display: false },
+			border: { display: false },
+		},
+		y: {
+			display: false,
+			grid: { display: false },
+			border: { display: false },
+		},
+	},
+};
+---
+
+<Chart type="bar" data={data} options={options} title={title} class={className} />

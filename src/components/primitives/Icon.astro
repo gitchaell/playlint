@@ -1,0 +1,60 @@
+---
+import * as LucideIcons from '@lucide/astro';
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'svg'> {
+	name: string;
+	size?: number | string;
+	color?: string;
+	strokeWidth?: number | string;
+	class?: string;
+}
+
+const {
+	name,
+	size = 24,
+	color = 'currentColor',
+	strokeWidth = 2,
+	class: className,
+	...rest
+} = Astro.props;
+
+const isCustomIcon = name.endsWith('.svg');
+
+// Convert kebab-case or handle already PascalCase
+const getLucideIconName = (str: string) => {
+	if (!str.includes('-') && /^[A-Z]/.test(str)) {
+		return str; // Already PascalCase
+	}
+	return str
+		.split('-')
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+		.join('');
+};
+
+const pascalName = getLucideIconName(name.replace('.svg', ''));
+// biome-ignore lint/suspicious/noExplicitAny: needed for dynamic icon import
+const LucideIcon = (LucideIcons as any)[pascalName];
+---
+
+{
+	isCustomIcon ? (
+		<img
+			src={`/icons/${name}`}
+			class={className}
+			width={size}
+			height={size}
+			alt={name.replace('.svg', '')}
+		/>
+	) : LucideIcon ? (
+		<LucideIcon
+			size={size}
+			color={color}
+			strokeWidth={strokeWidth}
+			class={className}
+			{...rest}
+		/>
+	) : (
+		<span class="text-red-500 text-xs">[Icon: {name}]</span>
+	)
+}

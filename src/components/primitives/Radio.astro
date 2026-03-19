@@ -1,0 +1,77 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const radioVariants = tv({
+	base: 'group flex items-start gap-3 cursor-pointer',
+});
+
+const indicatorVariants = tv({
+	base: 'relative flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all mt-0.5',
+	variants: {
+		variant: {
+			default:
+				'border-zinc-300 bg-white peer-checked:border-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:peer-checked:border-zinc-100',
+			error:
+				'border-red-500 bg-white peer-checked:border-red-500 dark:bg-zinc-950',
+		},
+	},
+	defaultVariants: {
+		variant: 'default',
+	},
+});
+
+type RadioVariants = VariantProps<typeof radioVariants>;
+
+interface Props extends Omit<HTMLAttributes<'input'>, 'type'>, RadioVariants {
+	label?: string;
+	error?: string;
+	variant?: 'default' | 'error';
+	name?: string;
+}
+
+const {
+	class: className,
+	label,
+	error,
+	variant,
+	id,
+	name,
+	...rest
+} = Astro.props;
+const inputId = id || `radio-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<label class={radioVariants({ class: className })} for={inputId}>
+	<div class="relative flex items-center">
+		<input
+			type="radio"
+			id={inputId}
+			name={name}
+			class="peer sr-only"
+			aria-invalid={!!error}
+			aria-describedby={error ? `${inputId}-error` : undefined}
+			{...rest}
+		/>
+		<div class={indicatorVariants({ variant: error ? 'error' : variant })}>
+			<div class="h-2.5 w-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 opacity-0 scale-50 transition-all group-has-[:checked]:opacity-100 group-has-[:checked]:scale-100"></div>
+		</div>
+	</div>
+
+	{
+		(label || error) && (
+			<div class="flex flex-col">
+				{label && (
+					<span class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+						{label}
+					</span>
+				)}
+				{error && (
+					<span id={`${inputId}-error`} class="mt-1 text-sm text-red-500 dark:text-red-400">
+						{error}
+					</span>
+				)}
+			</div>
+		)
+	}
+</label>

@@ -1,0 +1,67 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const loaderVariants = tv({
+	base: '',
+	variants: {
+		variant: {
+			spinner:
+				'inline-block animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] text-[#101828] dark:text-white motion-reduce:animate-[spin_1.5s_linear_infinite]',
+			progress:
+				'h-1.5 w-full overflow-hidden rounded-full bg-[#F2F4F7] dark:bg-[#344054]',
+		},
+		size: {
+			sm: 'h-4 w-4 border-[2px]',
+			md: 'h-6 w-6 border-[2px]',
+			lg: 'h-8 w-8 border-[3px]',
+		},
+	},
+	compoundVariants: [
+		{
+			variant: 'progress',
+			class: 'h-1.5 w-full rounded-full border-none', // size props don't apply same way to progress bar base
+		},
+	],
+	defaultVariants: {
+		variant: 'spinner',
+		size: 'md',
+	},
+});
+
+type LoaderVariants = VariantProps<typeof loaderVariants>;
+
+interface Props extends HTMLAttributes<'div'>, LoaderVariants {
+	value?: number; // 0-100 for progress bar
+}
+
+const { variant, size, value = 0, class: className, ...rest } = Astro.props;
+---
+
+{
+	variant === 'spinner' ? (
+		<div
+			class={loaderVariants({ variant, size, class: className })}
+			role="status"
+			{...rest}
+		>
+			<span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+				Loading...
+			</span>
+		</div>
+	) : (
+		<div
+			class={loaderVariants({ variant, class: className })}
+			role="progressbar"
+			aria-valuenow={value}
+			aria-valuemin="0"
+			aria-valuemax="100"
+			{...rest}
+		>
+			<div
+				class="h-full rounded-full bg-[#101828] dark:bg-white transition-all duration-300 ease-in-out"
+				style={`width: ${Math.min(100, Math.max(0, value))}%`}
+			/>
+		</div>
+	)
+}

@@ -1,0 +1,44 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const menuItemVariants = tv({
+	base: 'group flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm text-zinc-900 outline-none transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:focus:bg-zinc-800 dark:focus:text-zinc-100',
+});
+
+interface Props extends VariantProps<typeof menuItemVariants> {
+	class?: string;
+	disabled?: boolean;
+	checked?: boolean;
+	role?: 'menuitem' | 'menuitemcheckbox' | 'menuitemradio';
+}
+
+const {
+	class: className,
+	disabled,
+	checked,
+	role = 'menuitem',
+	...rest
+} = Astro.props;
+---
+
+<div
+	role={role}
+	class={menuItemVariants({ class: className })}
+	aria-disabled={disabled}
+	aria-checked={checked}
+	data-disabled={disabled ? '' : undefined}
+	tabindex={disabled ? -1 : 0}
+	{...rest}
+>
+	{(role === 'menuitemcheckbox' || role === 'menuitemradio') && (
+		<span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+			{checked && (
+				<Icon name="Check" class="h-4 w-4" />
+			)}
+		</span>
+	)}
+	<span class:list={[(role === 'menuitemcheckbox' || role === 'menuitemradio') && 'pl-6']}>
+		<slot />
+	</span>
+</div>

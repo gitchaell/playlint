@@ -1,0 +1,76 @@
+---
+import { Activity, Component, Globe, Layers, Palette } from '@lucide/astro';
+import { defaultLang } from '@/i18n/ui';
+import { type LangCode, useTranslations } from '@/i18n/utils';
+
+interface Props {
+	lang?: LangCode;
+}
+
+const { lang = defaultLang } = Astro.props;
+
+const t = useTranslations(lang);
+
+const features = [
+	{
+		title: t('features.tools.title'),
+		desc: t('features.tools.desc'),
+		icon: Layers,
+	},
+	{
+		title: t('features.theme.title'),
+		desc: t('features.theme.desc'),
+		icon: Palette,
+	},
+	{
+		title: t('features.i18n.title'),
+		desc: t('features.i18n.desc'),
+		icon: Globe,
+	},
+	{
+		title: t('features.components.title'),
+		desc: t('features.components.desc'),
+		icon: Component,
+	},
+	{
+		title: t('features.actions.title'),
+		desc: t('features.actions.desc'),
+		icon: Activity,
+	},
+];
+---
+
+<section
+	class="relative py-20 md:py-32 overflow-hidden border-t border-zinc-200 dark:border-zinc-800"
+>
+	<div class="container mx-auto px-6 max-w-6xl relative z-10">
+		<div class="mb-16 text-center max-w-3xl mx-auto">
+			<h2
+				class="text-3xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6"
+			>
+				{t("features.title")}
+			</h2>
+			<p class="text-lg text-zinc-600 dark:text-zinc-400">
+				{t("features.subtitle")}
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			{
+				features.map((feature) => (
+					<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300">
+						<div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 group-hover:scale-110 transition-transform duration-300">
+							<feature.icon class="h-6 w-6" />
+						</div>
+						<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">
+							{feature.title}
+						</h3>
+						<p class="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
+							{feature.desc}
+						</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

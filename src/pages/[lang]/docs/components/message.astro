@@ -1,0 +1,63 @@
+---
+import DocsSidebar from '@/components/common/DocsSidebar.astro';
+import Breadcrumb from '@/components/primitives/Breadcrumb.astro';
+import ComponentAlias from '@/components/primitives/Message.astro';
+import { languages } from '@/i18n/ui';
+import type { LangCode } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+interface Props {
+	lang: LangCode;
+}
+
+const { lang } = Astro.params as Props;
+---
+
+<Layout
+	title="Message - Documentation"
+	description="Documentation for Message component"
+	lang={lang}
+>
+	<div class="container mx-auto flex w-full flex-col md:flex-row">
+		<DocsSidebar lang={lang} currentPath={Astro.url.pathname} />
+		<main class="flex-1 min-w-0 px-4 md:px-8 py-12 flex min-h-[calc(100vh-4rem)] flex-col max-w-4xl mx-auto">
+		<Breadcrumb
+			items={[
+				{ label: 'Home', href: `/${lang}` },
+				{ label: 'Docs', href: `/${lang}/docs` },
+				{ label: 'Components', href: `/${lang}/docs/components` },
+				{ label: 'Message' }
+			]}
+			class="mb-8"
+		/>
+
+		<h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">Message</h1>
+		<p class="text-lg text-zinc-600 dark:text-zinc-400 mb-8">
+			Documentation and examples for the Message component.
+		</p>
+
+		<section class="mb-12">
+			<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Example Usage</h2>
+			<div class="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg mb-8 bg-white dark:bg-zinc-900">
+				<ComponentAlias variant="received" name="Alice" time="10:00 AM" content="Hello there!" />
+			</div>
+		</section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">How to Use</h2>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-4">
+                To use the Message component, import it from its location and pass the required props.
+            </p>
+            <pre class="bg-zinc-100 dark:bg-zinc-800 p-4 rounded-lg overflow-x-auto text-sm text-zinc-800 dark:text-zinc-200">
+import Message from '@/components/primitives/Message.astro';
+
+&lt;Message variant="received" name="Alice" time="10:00 AM" content="Hello there!" /&gt;
+            </pre>
+        </section>
+	</main>
+	</div>
+</Layout>

@@ -1,0 +1,85 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const inputVariants = tv({
+	base: 'flex h-11 w-full rounded-md border bg-white px-3 py-2 text-sm text-zinc-900 transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400 disabled:border-zinc-200 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-400 dark:focus-visible:ring-white dark:focus-visible:ring-offset-zinc-950 dark:disabled:bg-zinc-900 dark:disabled:text-zinc-600 dark:disabled:border-zinc-800',
+	variants: {
+		variant: {
+			default: 'border-zinc-200 dark:border-zinc-800',
+			error:
+				'border-red-500 focus-visible:ring-red-500 dark:border-red-400 dark:focus-visible:ring-red-400',
+		},
+		iconLeft: {
+			true: 'pl-10',
+		},
+		iconRight: {
+			true: 'pr-10',
+		},
+	},
+	defaultVariants: {
+		variant: 'default',
+	},
+});
+
+interface Props
+	extends HTMLAttributes<'input'>,
+		Omit<VariantProps<typeof inputVariants>, 'iconLeft' | 'iconRight'> {
+	label?: string;
+	error?: string;
+	iconLeft?: string;
+	iconRight?: string;
+}
+
+const {
+	variant,
+	label,
+	error,
+	iconLeft,
+	iconRight,
+	class: className,
+	id,
+	...rest
+} = Astro.props;
+
+// Determine if it is actually in error state
+const isError = variant === 'error' || !!error;
+
+// Ensure we have an ID for label association
+const inputId = id || `input-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<div class="space-y-1 w-full">
+	{label && (
+		<label for={inputId} class="block text-sm font-medium text-zinc-900 dark:text-zinc-100">
+			{label}
+		</label>
+	)}
+
+	<div class="relative">
+		{iconLeft && (
+			<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-900 dark:text-zinc-100">
+				<Icon name={iconLeft as any} class="h-5 w-5" />
+			</div>
+		)}
+
+		<input
+			id={inputId}
+			class={inputVariants({ variant: isError ? 'error' : 'default', iconLeft: !!iconLeft, iconRight: !!iconRight, class: className })}
+			{...rest}
+		/>
+
+		{iconRight && (
+			<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-900 dark:text-zinc-100">
+				<Icon name={iconRight as any} class="h-5 w-5" />
+			</div>
+		)}
+	</div>
+
+	{error && (
+		<p class="text-sm text-red-500 dark:text-red-400">
+			{error}
+		</p>
+	)}
+</div>

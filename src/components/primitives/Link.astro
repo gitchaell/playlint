@@ -1,0 +1,16 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import AstroTypesafeLink from 'astro-typesafe-routes/link';
+
+interface Props extends HTMLAttributes<'a'> {
+	// biome-ignore lint/suspicious/noExplicitAny: needed for generic routing wrapper
+	to: any;
+	params?: Record<string, string>;
+}
+
+const { to, params, ...rest } = Astro.props;
+---
+
+<AstroTypesafeLink to={to} params={params as any} {...rest}>
+	<slot />
+</AstroTypesafeLink>

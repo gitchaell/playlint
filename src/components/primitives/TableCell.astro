@@ -1,0 +1,17 @@
+---
+import { tv } from 'tailwind-variants';
+
+const cellVariants = tv({
+	base: 'border-b border-zinc-200 dark:border-zinc-800 py-4 px-4 font-normal text-zinc-600 dark:text-zinc-400 align-middle',
+});
+
+interface Props {
+	class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<td class={cellVariants({ class: className })} {...rest}>
+	<slot />
+</td>

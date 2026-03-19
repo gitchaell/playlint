@@ -1,0 +1,36 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const navBarVariants = tv({
+	base: 'flex w-full',
+	variants: {
+		variant: {
+			bottomTab:
+				'h-16 items-center justify-around border-t border-zinc-200 bg-white px-2 pb-safe pt-2 dark:border-zinc-800 dark:bg-zinc-950',
+			mobileTop:
+				'h-14 items-center justify-between border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-950',
+			desktopSide:
+				'h-full w-64 flex-col border-r border-zinc-200 bg-white py-4 dark:border-zinc-800 dark:bg-zinc-950',
+		},
+	},
+	defaultVariants: {
+		variant: 'bottomTab',
+	},
+});
+
+interface Props extends VariantProps<typeof navBarVariants> {
+	class?: string;
+}
+
+const { class: className, variant = 'bottomTab' } = Astro.props;
+---
+
+<nav class={navBarVariants({ variant, class: className })}>
+	{variant === 'desktopSide' ? (
+		<div class="flex flex-1 flex-col gap-1 px-3">
+			<slot />
+		</div>
+	) : (
+		<slot />
+	)}
+</nav>

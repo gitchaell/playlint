@@ -1,0 +1,128 @@
+---
+import { tv } from 'tailwind-variants';
+import IconButton from './IconButton.astro';
+
+const modalOverlayVariants = tv({
+	base: 'fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity hidden opacity-0',
+});
+
+const modalContentVariants = tv({
+	base: 'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-zinc-200 bg-white p-6 shadow-lg duration-200 sm:rounded-lg dark:border-zinc-800 dark:bg-zinc-950 hidden opacity-0 scale-95 transition-all',
+});
+
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'button'> {
+	id: string;
+	title: string;
+	description?: string;
+	triggerText?: string;
+}
+
+const {
+	id,
+	title,
+	description,
+	triggerText = 'Open Modal',
+	class: className,
+	...rest
+} = Astro.props;
+---
+
+<div>
+	<button
+		type="button"
+		class={`inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 ${className || ''}`}
+		{...rest}
+		data-modal-trigger={id}
+	>
+		{triggerText}
+	</button>
+
+	<div class={modalOverlayVariants()} data-modal-overlay={id}></div>
+
+	<div
+		role="dialog"
+		aria-labelledby={`${id}-title`}
+		aria-describedby={description ? `${id}-desc` : undefined}
+		class={modalContentVariants()}
+		data-modal-content={id}
+	>
+		<div class="flex flex-col space-y-1.5 text-center sm:text-left">
+			<h2 id={`${id}-title`} class="text-lg font-semibold leading-none tracking-tight text-zinc-900 dark:text-zinc-50">
+				{title}
+			</h2>
+			{description && (
+				<p id={`${id}-desc`} class="text-sm text-zinc-500 dark:text-zinc-400">
+					{description}
+				</p>
+			)}
+		</div>
+		<div class="py-4">
+			<slot />
+		</div>
+		<div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+			<button
+				type="button"
+				class="mt-2 sm:mt-0 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 border border-zinc-200 bg-transparent shadow-sm hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 h-9 px-4 py-2"
+				data-modal-close={id}
+			>
+				Close
+			</button>
+		</div>
+		<div class="absolute right-4 top-4">
+			<IconButton
+				icon="X"
+				variant="ghost"
+				aria-label="Close"
+				class="h-6 w-6 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-zinc-100 data-[state=open]:text-zinc-500 dark:ring-offset-zinc-950 dark:focus:ring-zinc-300 dark:data-[state=open]:bg-zinc-800 dark:data-[state=open]:text-zinc-400"
+				data-modal-close={id}
+			/>
+		</div>
+	</div>
+</div>
+
+<script>
+	const initModals = () => {
+		document.querySelectorAll('[data-modal-trigger]').forEach(trigger => {
+			const id = trigger.getAttribute('data-modal-trigger');
+			const overlay = document.querySelector(`[data-modal-overlay="${id}"]`);
+			const content = document.querySelector(`[data-modal-content="${id}"]`);
+			const closes = document.querySelectorAll(`[data-modal-close="${id}"]`);
+
+			if (!overlay || !content) return;
+
+			const openModal = () => {
+				overlay.classList.remove('hidden');
+				content.classList.remove('hidden');
+
+				// small delay to allow display block to render before opacity transition
+				requestAnimationFrame(() => {
+					overlay.classList.remove('opacity-0');
+					content.classList.remove('opacity-0', 'scale-95');
+					content.classList.add('opacity-100', 'scale-100');
+				});
+				document.body.style.overflow = 'hidden';
+			};
+
+			const closeModal = () => {
+				overlay.classList.remove('opacity-100');
+				overlay.classList.add('opacity-0');
+				content.classList.remove('opacity-100', 'scale-100');
+				content.classList.add('opacity-0', 'scale-95');
+
+				setTimeout(() => {
+					overlay.classList.add('hidden');
+					content.classList.add('hidden');
+					document.body.style.overflow = '';
+				}, 200);
+			};
+
+			trigger.addEventListener('click', openModal);
+			overlay.addEventListener('click', closeModal);
+			closes.forEach(c => c.addEventListener('click', closeModal));
+		});
+	};
+
+	document.addEventListener('astro:page-load', initModals);
+</script>

@@ -1,0 +1,22 @@
+{
+	"[astro]": {
+		"editor.defaultFormatter": "astro-build.astro-vscode"
+	},
+	"debug.toolBarLocation": "docked",
+	"editor.formatOnSave": true,
+	"editor.hover.sticky": false,
+	"editor.insertSpaces": false,
+	"editor.lineHeight": 1.8,
+	"editor.minimap.autohide": "mouseover",
+	"editor.renderWhitespace": "all",
+	"editor.stickyScroll.enabled": false,
+	"editor.stickyScroll.scrollWithEditor": false,
+	"files.autoSave": "off",
+	"javascript.preferences.quoteStyle": "single",
+	"markdown.preview.openMarkdownLinks": "inEditor",
+	"terminal.integrated.stickyScroll.enabled": false,
+	"typescript.preferences.quoteStyle": "single",
+	"workbench.editor.showTabs": "single",
+	"workbench.tree.enableStickyScroll": false,
+	"editor.codeActionsOnSave": {}
+}

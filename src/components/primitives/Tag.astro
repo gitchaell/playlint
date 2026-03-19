@@ -1,0 +1,58 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const tagVariants = tv({
+	base: 'inline-flex items-center justify-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+	variants: {
+		variant: {
+			default: 'bg-[#F2F4F7] text-[#101828] dark:bg-[#1D2939] dark:text-white',
+			outline:
+				'border border-[#D0D5DD] bg-white text-[#101828] dark:border-[#344054] dark:bg-transparent dark:text-white',
+		},
+		removable: {
+			true: 'pr-1.5',
+			false: '',
+		},
+	},
+	defaultVariants: {
+		variant: 'default',
+		removable: true,
+	},
+});
+
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props
+	extends HTMLAttributes<'span'>,
+		VariantProps<typeof tagVariants> {
+	class?: string;
+	label: string;
+	removable?: boolean;
+	onRemove?: string; // JavaScript code to execute on remove
+}
+
+const {
+	class: className,
+	variant = 'default',
+	label,
+	removable = true,
+	onRemove,
+	...rest
+} = Astro.props;
+---
+
+<span class={tagVariants({ variant, removable, class: className })}
+	{...rest}>
+	{label}
+	{removable && (
+		<button
+			type="button"
+			class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[#98A2B3] transition-colors hover:bg-[#E4E7EC] hover:text-[#475467] focus:bg-[#E4E7EC] focus:text-[#475467] focus:outline-none dark:text-[#475467] dark:hover:bg-[#344054] dark:hover:text-[#D0D5DD] dark:focus:bg-[#344054] dark:focus:text-[#D0D5DD]"
+			aria-label={`Remove ${label}`}
+			onclick={onRemove}
+		>
+			<Icon name="X" class="h-3 w-3" />
+		</button>
+	)}
+</span>

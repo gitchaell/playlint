@@ -1,0 +1,221 @@
+---
+import DocsSidebar from '@/components/common/DocsSidebar.astro';
+import Breadcrumb from '@/components/primitives/Breadcrumb.astro';
+import { languages } from '@/i18n/ui';
+import type { LangCode } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+interface Props {
+	lang: LangCode;
+}
+
+const { lang } = Astro.params as Props;
+---
+<Layout
+	title="Components Overview - Documentation"
+	description="Explore our comprehensive library of primitives and blocks."
+	lang={lang}
+>
+	<div class="container mx-auto flex w-full flex-col md:flex-row">
+		<DocsSidebar lang={lang} currentPath={Astro.url.pathname} />
+		<main class="flex-1 min-w-0 px-4 md:px-8 py-12 flex min-h-[calc(100vh-4rem)] flex-col max-w-4xl mx-auto">
+			<Breadcrumb
+				items={[
+					{ label: 'Home', href: `/${lang}` },
+					{ label: 'Docs', href: `/${lang}/docs` },
+					{ label: 'Components' }
+				]}
+				class="mb-8"
+			/>
+
+			<h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">Components Overview</h1>
+			<p class="text-lg text-zinc-600 dark:text-zinc-400 mb-12">
+				Explore our comprehensive collection of accessible and customizable components.
+				Our components are divided into fundamental <strong class="text-zinc-900 dark:text-zinc-100 font-semibold">Primitives</strong> and more complex, ready-to-use <strong class="text-zinc-900 dark:text-zinc-100 font-semibold">Blocks</strong>.
+			</p>
+
+			<section class="mb-16">
+				<div class="flex items-center gap-2 mb-6 border-b border-zinc-200 dark:border-zinc-800 pb-2">
+					<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Primitives</h2>
+				</div>
+				<p class="text-zinc-600 dark:text-zinc-400 mb-6">
+					Core building blocks that form the foundation of our design system.
+				</p>
+				<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+					<a href={`/${lang}/docs/components/accordion`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Accordion</span>
+					</a>
+					<a href={`/${lang}/docs/components/alert`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Alert</span>
+					</a>
+					<a href={`/${lang}/docs/components/barchart`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">BarChart</span>
+					</a>
+					<a href={`/${lang}/docs/components/breadcrumb`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Breadcrumb</span>
+					</a>
+					<a href={`/${lang}/docs/components/button`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Button</span>
+					</a>
+					<a href={`/${lang}/docs/components/buttongroup`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">ButtonGroup</span>
+					</a>
+					<a href={`/${lang}/docs/components/chart`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Chart</span>
+					</a>
+					<a href={`/${lang}/docs/components/checkbox`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Checkbox</span>
+					</a>
+					<a href={`/${lang}/docs/components/codesnippet`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">CodeSnippet</span>
+					</a>
+					<a href={`/${lang}/docs/components/collapsiblelist`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">CollapsibleList</span>
+					</a>
+					<a href={`/${lang}/docs/components/creditcard`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">CreditCard</span>
+					</a>
+					<a href={`/${lang}/docs/components/datapoint`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">DataPoint</span>
+					</a>
+					<a href={`/${lang}/docs/components/datetimeinput`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">DateTimeInput</span>
+					</a>
+					<a href={`/${lang}/docs/components/doughnutchart`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">DoughnutChart</span>
+					</a>
+					<a href={`/${lang}/docs/components/dropdown`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Dropdown</span>
+					</a>
+					<a href={`/${lang}/docs/components/featureselector`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">FeatureSelector</span>
+					</a>
+					<a href={`/${lang}/docs/components/featuretile`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">FeatureTile</span>
+					</a>
+					<a href={`/${lang}/docs/components/fileupload`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">FileUpload</span>
+					</a>
+					<a href={`/${lang}/docs/components/icon`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Icon</span>
+					</a>
+					<a href={`/${lang}/docs/components/iconbutton`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">IconButton</span>
+					</a>
+					<a href={`/${lang}/docs/components/input`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Input</span>
+					</a>
+					<a href={`/${lang}/docs/components/linechart`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">LineChart</span>
+					</a>
+					<a href={`/${lang}/docs/components/link`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Link</span>
+					</a>
+					<a href={`/${lang}/docs/components/loader`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Loader</span>
+					</a>
+					<a href={`/${lang}/docs/components/mediaplayer`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">MediaPlayer</span>
+					</a>
+					<a href={`/${lang}/docs/components/menu`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Menu</span>
+					</a>
+					<a href={`/${lang}/docs/components/menuitem`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">MenuItem</span>
+					</a>
+					<a href={`/${lang}/docs/components/message`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Message</span>
+					</a>
+					<a href={`/${lang}/docs/components/modal`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Modal</span>
+					</a>
+					<a href={`/${lang}/docs/components/navbar`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">NavBar</span>
+					</a>
+					<a href={`/${lang}/docs/components/navitem`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">NavItem</span>
+					</a>
+					<a href={`/${lang}/docs/components/pagination`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Pagination</span>
+					</a>
+					<a href={`/${lang}/docs/components/paymentmethod`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">PaymentMethod</span>
+					</a>
+					<a href={`/${lang}/docs/components/radio`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Radio</span>
+					</a>
+					<a href={`/${lang}/docs/components/rating`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Rating</span>
+					</a>
+					<a href={`/${lang}/docs/components/searchinput`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">SearchInput</span>
+					</a>
+					<a href={`/${lang}/docs/components/select`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Select</span>
+					</a>
+					<a href={`/${lang}/docs/components/settingrow`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">SettingRow</span>
+					</a>
+					<a href={`/${lang}/docs/components/slider`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Slider</span>
+					</a>
+					<a href={`/${lang}/docs/components/tab`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Tab</span>
+					</a>
+					<a href={`/${lang}/docs/components/tablist`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">TabList</span>
+					</a>
+					<a href={`/${lang}/docs/components/table`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Table</span>
+					</a>
+					<a href={`/${lang}/docs/components/tablecell`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">TableCell</span>
+					</a>
+					<a href={`/${lang}/docs/components/tableheadcell`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">TableHeadCell</span>
+					</a>
+					<a href={`/${lang}/docs/components/tag`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Tag</span>
+					</a>
+					<a href={`/${lang}/docs/components/toggle`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Toggle</span>
+					</a>
+					<a href={`/${lang}/docs/components/tooltip`} class="group flex flex-col p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<span class="font-medium text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Tooltip</span>
+					</a>
+				</div>
+			</section>
+
+			<section class="mb-12">
+				<div class="flex items-center gap-2 mb-6 border-b border-zinc-200 dark:border-zinc-800 pb-2">
+					<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Blocks</h2>
+				</div>
+				<p class="text-zinc-600 dark:text-zinc-400 mb-6">
+					Pre-built sections and complex components composed of multiple primitives.
+				</p>
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<a href={`/${lang}/docs/components/features`} class="group flex flex-col p-5 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<h3 class="font-semibold text-zinc-900 dark:text-zinc-100 mb-1 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Features</h3>
+						<p class="text-sm text-zinc-500 dark:text-zinc-400">A section block showcasing product features with icons and descriptions.</p>
+					</a>
+					<a href={`/${lang}/docs/components/hero`} class="group flex flex-col p-5 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<h3 class="font-semibold text-zinc-900 dark:text-zinc-100 mb-1 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Hero</h3>
+						<p class="text-sm text-zinc-500 dark:text-zinc-400">A prominent header section typically used at the top of a page.</p>
+					</a>
+					<a href={`/${lang}/docs/components/logo`} class="group flex flex-col p-5 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<h3 class="font-semibold text-zinc-900 dark:text-zinc-100 mb-1 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">Logo</h3>
+						<p class="text-sm text-zinc-500 dark:text-zinc-400">Brand logo component with various sizing and variant options.</p>
+					</a>
+					<a href={`/${lang}/docs/components/primitivesshowcase`} class="group flex flex-col p-5 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 transition-all shadow-sm hover:shadow-md">
+						<h3 class="font-semibold text-zinc-900 dark:text-zinc-100 mb-1 group-hover:text-zinc-700 dark:group-hover:text-zinc-300">PrimitivesShowcase</h3>
+						<p class="text-sm text-zinc-500 dark:text-zinc-400">A comprehensive showcase of multiple primitive components.</p>
+					</a>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>

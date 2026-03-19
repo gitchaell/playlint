@@ -1,0 +1,28 @@
+---
+import Features from '@/components/blocks/Features.astro';
+import Hero from '@/components/blocks/Hero.astro';
+import PrimitivesShowcase from '@/components/blocks/PrimitivesShowcase.astro';
+import { languages } from '@/i18n/ui';
+import { type LangCode, useTranslations } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+interface Props {
+	lang: LangCode;
+}
+
+const { lang } = Astro.params as Props;
+
+const t = useTranslations(lang);
+---
+
+<Layout title={t("site.title")} description={t("site.description")} lang={lang}>
+	<main class="container mx-auto">
+		<Hero lang={lang} />
+		<Features lang={lang} />
+		<PrimitivesShowcase />
+	</main>
+</Layout>

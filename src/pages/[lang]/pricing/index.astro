@@ -1,0 +1,143 @@
+---
+import Accordion from '@/components/primitives/Accordion.astro';
+import Button from '@/components/primitives/Button.astro';
+import Icon from '@/components/primitives/Icon.astro';
+import { languages } from '@/i18n/ui';
+import { type LangCode, useTranslations } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+interface Props {
+	lang: LangCode;
+}
+
+const { lang } = Astro.params as Props;
+
+const t = useTranslations(lang);
+---
+
+<Layout
+	title={t("nav.pricing") as string}
+	description="Pricing page"
+	lang={lang}
+>
+	<main class="container mx-auto px-4 py-16 flex min-h-[calc(100vh-4rem)] flex-col items-center">
+		<div class="text-center mb-16">
+			<h1 class="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">{t("nav.pricing")}</h1>
+			<p class="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+				Choose the perfect plan for your needs. Always know what you'll pay with transparent pricing.
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mb-24">
+			<!-- Hobby Plan -->
+			<div class="flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-8 shadow-sm">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Hobby</h3>
+				<p class="text-zinc-500 dark:text-zinc-400 text-sm mb-6">Perfect for side projects and learning.</p>
+				<div class="mb-6">
+					<span class="text-4xl font-bold text-zinc-900 dark:text-zinc-100">$0</span>
+					<span class="text-zinc-500 dark:text-zinc-400">/month</span>
+				</div>
+				<Button variant="outline" class="w-full mb-8">Get Started</Button>
+				<div class="flex flex-col gap-4 mt-auto">
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Up to 3 projects</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Community support</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Basic analytics</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Pro Plan -->
+			<div class="flex flex-col rounded-2xl border-2 border-zinc-900 dark:border-zinc-100 bg-white dark:bg-zinc-900/50 p-8 shadow-lg relative transform md:-translate-y-4">
+				<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase">
+					Most Popular
+				</div>
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Pro</h3>
+				<p class="text-zinc-500 dark:text-zinc-400 text-sm mb-6">For professional developers and small teams.</p>
+				<div class="mb-6">
+					<span class="text-4xl font-bold text-zinc-900 dark:text-zinc-100">$29</span>
+					<span class="text-zinc-500 dark:text-zinc-400">/month</span>
+				</div>
+				<Button variant="primary" class="w-full mb-8">Start Free Trial</Button>
+				<div class="flex flex-col gap-4 mt-auto">
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Unlimited projects</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Priority email support</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Advanced analytics</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Custom domains</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Enterprise Plan -->
+			<div class="flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-8 shadow-sm">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Enterprise</h3>
+				<p class="text-zinc-500 dark:text-zinc-400 text-sm mb-6">For large scale organizations with custom needs.</p>
+				<div class="mb-6">
+					<span class="text-4xl font-bold text-zinc-900 dark:text-zinc-100">$99</span>
+					<span class="text-zinc-500 dark:text-zinc-400">/month</span>
+				</div>
+				<Button variant="outline" class="w-full mb-8">Contact Sales</Button>
+				<div class="flex flex-col gap-4 mt-auto">
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Everything in Pro</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">24/7 phone support</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">Dedicated account manager</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<Icon name="check" class="h-5 w-5 text-green-500 shrink-0" />
+						<span class="text-sm text-zinc-600 dark:text-zinc-300">SSO & advanced security</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="w-full max-w-3xl">
+			<h2 class="text-2xl font-semibold text-center text-zinc-900 dark:text-zinc-100 mb-8">Pricing FAQ</h2>
+			<Accordion
+				items={[
+					{
+						title: "Can I switch plans later?",
+						content: "Absolutely. You can upgrade or downgrade your plan at any time. Prorated charges will be applied automatically."
+					},
+					{
+						title: "What payment methods do you accept?",
+						content: "We accept all major credit cards, PayPal, and wire transfers for annual Enterprise plans."
+					},
+					{
+						title: "Do you offer a refund policy?",
+						content: "Yes, we offer a 14-day money-back guarantee for all paid plans if you're not fully satisfied."
+					}
+				]}
+			/>
+		</div>
+	</main>
+</Layout>

@@ -1,0 +1,43 @@
+---
+import { Code } from 'astro:components';
+import { tv } from 'tailwind-variants';
+import IconButton from './IconButton.astro';
+
+const codeSnippetVariants = tv({
+	base: 'relative w-full overflow-hidden rounded-xl border border-zinc-200 bg-zinc-950 dark:border-zinc-800',
+});
+
+interface Props {
+	class?: string;
+	code: string;
+	// biome-ignore lint/suspicious/noExplicitAny: Required for astro:components typing fallback
+	language?: any;
+	filename?: string;
+}
+
+const {
+	class: className,
+	code,
+	language = 'javascript',
+	filename,
+	...rest
+} = Astro.props;
+---
+
+<div class={codeSnippetVariants({ class: className })} {...rest}>
+	{
+		filename && (
+			<div class="flex items-center justify-between border-b border-zinc-800 bg-zinc-900 px-4 py-2">
+				<span class="text-xs font-mono text-zinc-400">{filename}</span>
+				<div class="flex items-center gap-2">
+					<span class="text-xs text-zinc-500">{language}</span>
+					<IconButton icon="copy" variant="ghost" size="sm" class="text-zinc-400 hover:text-white" aria-label="Copy code" />
+				</div>
+			</div>
+		)
+	}
+
+	<div class="w-full text-left overflow-auto text-sm p-4 [&_pre]:!bg-transparent [&_pre]:!m-0 [&_pre]:!p-0">
+		<Code code={code} lang={language} theme="vitesse-dark" />
+	</div>
+</div>

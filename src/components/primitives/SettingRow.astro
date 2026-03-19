@@ -1,0 +1,51 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+import Checkbox from './Checkbox.astro';
+import Toggle from './Toggle.astro';
+
+const settingRowVariants = tv({
+	base: 'flex w-full items-center justify-between py-4 border-b border-[#F2F4F7] dark:border-[#1D2939] last:border-0',
+});
+
+interface Props extends VariantProps<typeof settingRowVariants> {
+	class?: string;
+	title: string;
+	description?: string;
+	type?: 'toggle' | 'checkbox';
+	checked?: boolean;
+	disabled?: boolean;
+}
+
+const {
+	class: className,
+	title,
+	description,
+	type = 'toggle',
+	checked = true,
+	disabled,
+} = Astro.props;
+
+// Use consistent IDs
+const id = `setting-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<div class={settingRowVariants({ class: className })}>
+	<div class="flex flex-col gap-1 pr-8">
+		<label for={id} class={`text-sm ${description ? 'font-semibold' : 'font-normal'} text-[#101828] dark:text-white cursor-pointer`}>
+			{title}
+		</label>
+		{description && (
+			<span class="text-sm text-[#475467] dark:text-[#98A2B3]">
+				{description}
+			</span>
+		)}
+	</div>
+
+	<div class="flex-shrink-0">
+		{type === 'toggle' ? (
+			<Toggle id={id} checked={checked} disabled={disabled} />
+		) : (
+			<Checkbox id={id} checked={checked} disabled={disabled} />
+		)}
+	</div>
+</div>

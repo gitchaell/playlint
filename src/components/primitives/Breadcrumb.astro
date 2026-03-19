@@ -1,0 +1,42 @@
+---
+import { tv } from 'tailwind-variants';
+
+const breadcrumbVariants = tv({
+	base: 'flex flex-wrap items-center gap-2 text-sm text-[#98A2B3] dark:text-[#475467]',
+});
+
+interface Props {
+	class?: string;
+	items: { label: string; href?: string }[];
+}
+
+const { class: className, items, ...rest } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class={breadcrumbVariants({ class: className })} {...rest}>
+	<ol class="flex flex-wrap items-center gap-2">
+		{items.map((item, index) => {
+			const isLast = index === items.length - 1;
+			return (
+				<li class="flex items-center gap-2">
+					{isLast ? (
+						<span class="font-semibold text-[#101828] dark:text-white" aria-current="page">
+							{item.label}
+						</span>
+					) : (
+						<>
+							{item.href ? (
+								<a href={item.href} class="hover:text-[#475467] transition-colors dark:hover:text-[#D0D5DD]">
+									{item.label}
+								</a>
+							) : (
+								<span>{item.label}</span>
+							)}
+							<span class="text-[#D0D5DD] dark:text-[#344054]">/</span>
+						</>
+					)}
+				</li>
+			);
+		})}
+	</ol>
+</nav>

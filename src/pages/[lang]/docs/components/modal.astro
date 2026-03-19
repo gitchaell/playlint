@@ -1,0 +1,105 @@
+---
+import DocsSidebar from '@/components/common/DocsSidebar.astro';
+import Breadcrumb from '@/components/primitives/Breadcrumb.astro';
+import Button from '@/components/primitives/Button.astro';
+import CodeSnippet from '@/components/primitives/CodeSnippet.astro';
+import ComponentAlias from '@/components/primitives/Modal.astro';
+import { languages } from '@/i18n/ui';
+import type { LangCode } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+interface Props {
+	lang: LangCode;
+}
+
+const { lang } = Astro.params as Props;
+---
+
+<Layout
+	title="Modal - Documentation"
+	description="Documentation for Modal component"
+	lang={lang}
+>
+	<div class="container mx-auto flex w-full flex-col md:flex-row">
+		<DocsSidebar lang={lang} currentPath={Astro.url.pathname} />
+		<main class="flex-1 min-w-0 px-4 md:px-8 py-12 flex min-h-[calc(100vh-4rem)] flex-col max-w-4xl mx-auto">
+		<Breadcrumb
+			items={[
+				{ label: 'Home', href: `/${lang}` },
+				{ label: 'Docs', href: `/${lang}/docs` },
+				{ label: 'Components', href: `/${lang}/docs/components` },
+				{ label: 'Modal' }
+			]}
+			class="mb-8"
+		/>
+
+		<h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">Modal</h1>
+		<p class="text-lg text-zinc-600 dark:text-zinc-400 mb-8">
+			A dialog that floats over the rest of the application, requiring user interaction to continue.
+		</p>
+
+		<section class="mb-12">
+			<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Example Usage</h2>
+			<div class="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg mb-8 bg-white dark:bg-zinc-900">
+
+                <Button id="trigger-modal" onclick="document.getElementById('docs-modal').showModal()">Open Modal</Button>
+
+                <ComponentAlias id="docs-modal" title="Edit Profile">
+                    <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                        Make changes to your profile here. Click save when you're done.
+                    </p>
+                    <div class="flex justify-end gap-2 mt-6">
+                        <Button variant="secondary" onclick="document.getElementById('docs-modal').close()">Cancel</Button>
+                        <Button variant="primary" onclick="document.getElementById('docs-modal').close()">Save changes</Button>
+                    </div>
+                </ComponentAlias>
+			</div>
+            <CodeSnippet
+                code={`<Button onclick="document.getElementById('example-modal').showModal()">
+  Open Modal
+</Button>
+
+<Modal id="example-modal" title="Edit Profile">
+  <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+    Make changes to your profile here. Click save when you're done.
+  </p>
+  <div class="flex justify-end gap-2 mt-6">
+    <Button variant="secondary" onclick="document.getElementById('example-modal').close()">
+      Cancel
+    </Button>
+    <Button variant="primary" onclick="document.getElementById('example-modal').close()">
+      Save changes
+    </Button>
+  </div>
+</Modal>`}
+                language="astro"
+                filename="Example.astro"
+            />
+		</section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">How to Use</h2>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-4">
+                The Modal component uses the native HTML <code>&lt;dialog&gt;</code> element. You control it via JavaScript <code>showModal()</code> and <code>close()</code> methods.
+            </p>
+            <CodeSnippet
+                code={`import Modal from '@/components/primitives/Modal.astro';
+
+<button onclick="document.getElementById('my-modal').showModal()">
+    Show
+</button>
+
+<Modal id="my-modal" title="Confirm Action">
+    <p>Are you sure you want to proceed?</p>
+</Modal>`}
+                language="astro"
+                filename="example.astro"
+            />
+        </section>
+	</main>
+	</div>
+</Layout>

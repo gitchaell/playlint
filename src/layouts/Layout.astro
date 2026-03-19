@@ -1,0 +1,92 @@
+---
+import Analytics from '@vercel/analytics/astro';
+import Link from 'astro-typesafe-routes/link';
+import Logo from '@/components/blocks/Logo.astro';
+import Head from '@/components/common/Head.astro';
+import LanguageSelector from '@/components/common/LanguageSelector.astro';
+import ThemeToggle from '@/components/common/ThemeToggle.astro';
+import { type LangCode, useTranslations } from '@/i18n/utils';
+
+interface Props {
+	title: string;
+	description: string;
+	domain?: string;
+	lang?: LangCode;
+}
+
+const {
+	title,
+	description,
+	lang = (Astro.currentLocale || 'en') as LangCode,
+} = Astro.props;
+
+const t = useTranslations(lang);
+---
+
+<!doctype html>
+<html lang={lang}>
+	<Head title={title} description={description} />
+
+	<body
+		class="relative grid min-h-dvh grid-rows-[auto_1fr] overflow-x-hidden overflow-y-auto bg-zinc-50 font-sans text-zinc-900 antialiased selection:bg-zinc-300 selection:text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 dark:selection:bg-zinc-700 dark:selection:text-zinc-50"
+	>
+		<header
+			class="z-40 row-start-1 border-b border-zinc-200/50 bg-white/70 backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-950/70"
+		>
+			<div
+				class="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8"
+			>
+				<div class="flex items-center gap-6">
+					<Link
+						to="/[lang]"
+						params={{ lang }}
+							class="hover:opacity-80 transition-opacity"
+					>
+							<Logo size="md" />
+					</Link>
+					<nav
+						class="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-400"
+					>
+						<Link
+							to="/[lang]"
+							params={{ lang }}
+							class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+							>{t("nav.home")}</Link
+						>
+						<Link
+							to="/[lang]/docs"
+							params={{ lang }}
+							class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+							>{t("nav.docs")}</Link
+						>
+						<Link
+							to="/[lang]/pricing"
+							params={{ lang }}
+							class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+							>{t("nav.pricing")}</Link
+						>
+						<Link
+							to="/[lang]/login"
+							params={{ lang }}
+							class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+							>{t("nav.login")}</Link
+						>
+					</nav>
+				</div>
+				<div class="flex items-center justify-end gap-3">
+					<LanguageSelector />
+					<div class="h-4 w-px bg-zinc-200 dark:bg-zinc-800"></div>
+					<ThemeToggle />
+				</div>
+			</div>
+		</header>
+
+		<main class="row-start-2 flex flex-col z-10">
+			<slot />
+		</main>
+		<Analytics />
+		<script>
+			import "../scripts/actions.ts";
+		</script>
+	</body>
+</html>

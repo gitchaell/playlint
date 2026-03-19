@@ -1,0 +1,23 @@
+---
+import { tv } from 'tailwind-variants';
+
+const tableContainerVariants = tv({
+	base: 'w-full overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950',
+});
+
+const tableVariants = tv({
+	base: 'w-full min-w-full divide-y divide-zinc-200 dark:divide-zinc-800 text-left text-sm text-zinc-900 dark:text-zinc-100',
+});
+
+interface Props {
+	class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class={tableContainerVariants({ class: className })}>
+	<table class={tableVariants()} {...rest}>
+		<slot />
+	</table>
+</div>

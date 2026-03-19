@@ -1,0 +1,46 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv } from 'tailwind-variants';
+
+const buttonGroupVariants = tv({
+	base: 'inline-flex flex-wrap items-center justify-center rounded-lg shadow-sm',
+});
+
+interface Props extends HTMLAttributes<'div'> {
+	class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class={buttonGroupVariants({ class: className })} role="group" {...rest}>
+	<div class="flex overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800 divide-x divide-zinc-200 dark:divide-zinc-800">
+		<slot />
+	</div>
+</div>
+
+<script>
+	const initButtonGroups = () => {
+		const groups = document.querySelectorAll('[role="group"]');
+		groups.forEach(group => {
+			const buttons = group.querySelectorAll('button');
+			buttons.forEach(btn => {
+				btn.addEventListener('click', () => {
+					// Remove active classes from all siblings
+					buttons.forEach(b => {
+						b.classList.remove('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-900', 'dark:text-zinc-100');
+						b.classList.add('bg-white', 'dark:bg-zinc-900', 'text-zinc-600', 'dark:text-zinc-400');
+						b.setAttribute('aria-pressed', 'false');
+					});
+
+					// Add active class to clicked
+					btn.classList.add('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-900', 'dark:text-zinc-100');
+					btn.classList.remove('bg-white', 'dark:bg-zinc-900', 'text-zinc-600', 'dark:text-zinc-400');
+					btn.setAttribute('aria-pressed', 'true');
+				});
+			});
+		});
+	};
+
+	document.addEventListener('astro:page-load', initButtonGroups);
+</script>

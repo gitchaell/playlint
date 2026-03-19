@@ -1,0 +1,212 @@
+---
+import Link from 'astro-typesafe-routes/link';
+import Icon from '@/components/primitives/Icon.astro';
+import type { LangCode } from '@/i18n/utils';
+
+interface Props {
+	lang: LangCode;
+	currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+
+const categories = {
+	'Getting Started': [{ label: 'Introduction', href: `/${lang}/docs` }],
+	Primitives: [
+		{ label: 'Accordion', href: `/${lang}/docs/components/accordion` },
+		{ label: 'Alert', href: `/${lang}/docs/components/alert` },
+		{ label: 'BarChart', href: `/${lang}/docs/components/barchart` },
+		{ label: 'Breadcrumb', href: `/${lang}/docs/components/breadcrumb` },
+		{ label: 'Button', href: `/${lang}/docs/components/button` },
+		{ label: 'ButtonGroup', href: `/${lang}/docs/components/buttongroup` },
+		{ label: 'Chart', href: `/${lang}/docs/components/chart` },
+		{ label: 'Checkbox', href: `/${lang}/docs/components/checkbox` },
+		{ label: 'CodeSnippet', href: `/${lang}/docs/components/codesnippet` },
+		{
+			label: 'CollapsibleList',
+			href: `/${lang}/docs/components/collapsiblelist`,
+		},
+		{ label: 'CreditCard', href: `/${lang}/docs/components/creditcard` },
+		{ label: 'DataPoint', href: `/${lang}/docs/components/datapoint` },
+		{ label: 'DateTimeInput', href: `/${lang}/docs/components/datetimeinput` },
+		{ label: 'DoughnutChart', href: `/${lang}/docs/components/doughnutchart` },
+		{ label: 'Dropdown', href: `/${lang}/docs/components/dropdown` },
+		{
+			label: 'FeatureSelector',
+			href: `/${lang}/docs/components/featureselector`,
+		},
+		{ label: 'FeatureTile', href: `/${lang}/docs/components/featuretile` },
+		{ label: 'FileUpload', href: `/${lang}/docs/components/fileupload` },
+		{ label: 'Icon', href: `/${lang}/docs/components/icon` },
+		{ label: 'IconButton', href: `/${lang}/docs/components/iconbutton` },
+		{ label: 'Input', href: `/${lang}/docs/components/input` },
+		{ label: 'LineChart', href: `/${lang}/docs/components/linechart` },
+		{ label: 'Link', href: `/${lang}/docs/components/link` },
+		{ label: 'Loader', href: `/${lang}/docs/components/loader` },
+		{ label: 'MediaPlayer', href: `/${lang}/docs/components/mediaplayer` },
+		{ label: 'Menu', href: `/${lang}/docs/components/menu` },
+		{ label: 'MenuItem', href: `/${lang}/docs/components/menuitem` },
+		{ label: 'Message', href: `/${lang}/docs/components/message` },
+		{ label: 'Modal', href: `/${lang}/docs/components/modal` },
+		{ label: 'NavBar', href: `/${lang}/docs/components/navbar` },
+		{ label: 'NavItem', href: `/${lang}/docs/components/navitem` },
+		{ label: 'Pagination', href: `/${lang}/docs/components/pagination` },
+		{ label: 'PaymentMethod', href: `/${lang}/docs/components/paymentmethod` },
+		{ label: 'Radio', href: `/${lang}/docs/components/radio` },
+		{ label: 'Rating', href: `/${lang}/docs/components/rating` },
+		{ label: 'SearchInput', href: `/${lang}/docs/components/searchinput` },
+		{ label: 'Select', href: `/${lang}/docs/components/select` },
+		{ label: 'SettingRow', href: `/${lang}/docs/components/settingrow` },
+		{ label: 'Slider', href: `/${lang}/docs/components/slider` },
+		{ label: 'Tab', href: `/${lang}/docs/components/tab` },
+		{ label: 'TabList', href: `/${lang}/docs/components/tablist` },
+		{ label: 'Table', href: `/${lang}/docs/components/table` },
+		{ label: 'TableCell', href: `/${lang}/docs/components/tablecell` },
+		{ label: 'TableHeadCell', href: `/${lang}/docs/components/tableheadcell` },
+		{ label: 'Tag', href: `/${lang}/docs/components/tag` },
+		{ label: 'Toggle', href: `/${lang}/docs/components/toggle` },
+		{ label: 'Tooltip', href: `/${lang}/docs/components/tooltip` },
+	],
+	Blocks: [
+		{ label: 'Features', href: `/${lang}/docs/components/features` },
+		{ label: 'Hero', href: `/${lang}/docs/components/hero` },
+		{ label: 'Logo', href: `/${lang}/docs/components/logo` },
+		{
+			label: 'PrimitivesShowcase',
+			href: `/${lang}/docs/components/primitivesshowcase`,
+		},
+	],
+};
+---
+
+
+<!-- Mobile overlay -->
+<div id="docs-sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+<!-- Mobile Toggle Button -->
+<button
+	id="docs-sidebar-toggle"
+	class="md:hidden fixed bottom-4 right-4 z-50 p-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-full shadow-lg"
+	aria-label="Toggle Docs Sidebar"
+>
+	<Icon name="menu" class="w-6 h-6" />
+</button>
+
+<aside id="docs-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 transform -translate-x-full shrink-0 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-4 py-8 overflow-y-auto transition-transform duration-300 md:relative md:translate-x-0 md:sticky md:top-16 md:max-h-[calc(100vh-4rem)] md:block shadow-2xl md:shadow-none">
+
+	<div class="mb-6 relative">
+		<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-zinc-400">
+			<Icon name="search" class="w-4 h-4" />
+		</div>
+		<input
+			type="text"
+			id="docs-search"
+			placeholder="Search docs..."
+			class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 dark:focus:ring-zinc-400 transition-shadow text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
+		/>
+	</div>
+
+	<nav class="space-y-8" id="docs-nav">
+		{Object.entries(categories).map(([category, items]) => (
+			<div class="docs-category">
+				<h3 class="font-semibold text-sm tracking-tight text-zinc-900 dark:text-zinc-100 mb-3 uppercase">
+					{category}
+				</h3>
+				<ul class="space-y-1">
+					{items.map(item => {
+						const isActive = currentPath === item.href || currentPath === item.href + '/';
+						return (
+							<li class="docs-item">
+								<a
+									href={item.href}
+									class:list={[
+										"block px-3 py-1.5 text-sm rounded-md transition-colors",
+										isActive
+											? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium"
+											: "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50"
+									]}
+								>
+									{item.label}
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			</div>
+		))}
+	</nav>
+</aside>
+
+<script>
+	function initSearch() {
+		const searchInput = document.getElementById('docs-search') as HTMLInputElement;
+		const nav = document.getElementById('docs-nav');
+
+		if (!searchInput || !nav) return;
+
+		searchInput.addEventListener('input', (e) => {
+			const query = (e.target as HTMLInputElement).value.toLowerCase();
+			const categories = nav.querySelectorAll('.docs-category');
+
+			categories.forEach(category => {
+				const items = category.querySelectorAll('.docs-item');
+				let hasVisibleItems = false;
+
+				items.forEach(item => {
+					const text = item.textContent?.toLowerCase() || '';
+					if (text.includes(query)) {
+						(item as HTMLElement).style.display = 'block';
+						hasVisibleItems = true;
+					} else {
+						(item as HTMLElement).style.display = 'none';
+					}
+				});
+
+				if (hasVisibleItems) {
+					(category as HTMLElement).style.display = 'block';
+				} else {
+					(category as HTMLElement).style.display = 'none';
+				}
+			});
+		});
+	}
+
+	// Initialize on first load and after view transitions
+	initSearch();
+	document.addEventListener('astro:page-load', initSearch);
+
+	function initMobileSidebar() {
+		const toggle = document.getElementById('docs-sidebar-toggle');
+		const sidebar = document.getElementById('docs-sidebar');
+		const overlay = document.getElementById('docs-sidebar-overlay');
+		let isOpen = false;
+
+		function toggleSidebar() {
+			isOpen = !isOpen;
+			if (isOpen) {
+				sidebar?.classList.remove('-translate-x-full');
+				overlay?.classList.remove('hidden');
+			} else {
+				sidebar?.classList.add('-translate-x-full');
+				overlay?.classList.add('hidden');
+			}
+		}
+
+		toggle?.addEventListener('click', toggleSidebar);
+		overlay?.addEventListener('click', toggleSidebar);
+
+        // Close sidebar on link click (mobile)
+        const links = sidebar?.querySelectorAll('a');
+        links?.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768 && isOpen) {
+                    toggleSidebar();
+                }
+            });
+        });
+	}
+
+	initMobileSidebar();
+	document.addEventListener('astro:page-load', initMobileSidebar);
+
+</script>

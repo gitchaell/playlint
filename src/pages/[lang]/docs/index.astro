@@ -1,0 +1,116 @@
+---
+import DocsSidebar from '@/components/common/DocsSidebar.astro';
+import Accordion from '@/components/primitives/Accordion.astro';
+import Alert from '@/components/primitives/Alert.astro';
+import Breadcrumb from '@/components/primitives/Breadcrumb.astro';
+import CodeSnippet from '@/components/primitives/CodeSnippet.astro';
+import { languages } from '@/i18n/ui';
+import { type LangCode, useTranslations } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+interface Props {
+	lang: LangCode;
+}
+
+const { lang } = Astro.params as Props;
+
+const t = useTranslations(lang);
+---
+
+<Layout
+	title={t("nav.docs") as string}
+	description="Documentation page"
+	lang={lang}
+>
+	<div class="container mx-auto flex w-full flex-col md:flex-row">
+		<DocsSidebar lang={lang} currentPath={Astro.url.pathname} />
+		<main class="flex-1 min-w-0 px-4 md:px-8 py-12 flex min-h-[calc(100vh-4rem)] flex-col max-w-4xl mx-auto">
+		<Breadcrumb
+			items={[
+				{ label: 'Home', href: `/${lang}` },
+				{ label: 'Docs', href: `/${lang}/docs` },
+				{ label: 'Getting Started' }
+			]}
+			class="mb-8"
+		/>
+
+		<h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">{t("nav.docs")}</h1>
+		<p class="text-lg text-zinc-600 dark:text-zinc-400 mb-8">
+			Welcome to the documentation. Learn how to set up, configure, and build with our framework.
+		</p>
+
+		<Alert
+			variant="warning"
+			title="Beta Release"
+			icon="alert-triangle"
+			class="mb-8"
+		>
+			This documentation is currently in beta. Features and APIs are subject to change. Please report any issues on GitHub.
+		</Alert>
+
+		<section class="mb-12">
+			<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Components</h2>
+			<p class="text-zinc-600 dark:text-zinc-400 mb-4">
+				Check out the detailed documentation for all available primitives and blocks components.
+			</p>
+			<a href={`/${lang}/docs/components`} class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2">
+				Browse Components Directory
+			</a>
+		</section>
+
+		<section class="mb-12">
+			<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Installation</h2>
+			<p class="text-zinc-600 dark:text-zinc-400 mb-4">
+				Get started by installing the necessary packages using your preferred package manager.
+			</p>
+
+			<CodeSnippet
+				code="npm install @gitchaell/astro-template"
+				language="bash"
+				filename="terminal"
+				class="mb-8"
+			/>
+
+			<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Configuration</h2>
+			<p class="text-zinc-600 dark:text-zinc-400 mb-4">
+				Add the integration to your Astro configuration file to enable all features.
+			</p>
+
+			<CodeSnippet
+				code={`import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  // Add your configuration here
+  integrations: []
+});`}
+				language="javascript"
+				filename="astro.config.mjs"
+			/>
+		</section>
+
+		<section class="mb-12">
+			<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-6">Frequently Asked Questions</h2>
+			<Accordion
+				items={[
+					{
+						title: "Is this template suitable for production?",
+						content: "Yes! While some features are in beta, the core template is built with production-ready tools and practices."
+					},
+					{
+						title: "How do I customize the default theme?",
+						content: "You can easily customize the theme by modifying the tailwind.config.mjs file or overwriting the CSS variables in src/styles/global.css."
+					},
+					{
+						title: "Can I use HTMX with this template?",
+						content: "This template avoids HTMX by default in favor of a custom, lightweight declarative fetch system located in src/scripts/actions.ts, but you can add it if required."
+					}
+				]}
+			/>
+		</section>
+	</main>
+	</div>
+</Layout>

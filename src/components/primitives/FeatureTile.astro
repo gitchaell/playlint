@@ -1,0 +1,31 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const featureTileVariants = tv({
+	base: 'flex flex-col items-start rounded-xl border border-[#D0D5DD] bg-[#F2F4F7] p-6 text-left transition-colors dark:border-[#344054] dark:bg-[#1D2939]',
+});
+
+type FeatureTileVariants = VariantProps<typeof featureTileVariants>;
+
+interface Props extends HTMLAttributes<'div'>, FeatureTileVariants {
+	icon?: string;
+	title: string;
+	description: string;
+}
+
+const { icon, title, description, class: className, ...rest } = Astro.props;
+---
+
+<div class={featureTileVariants({ class: className })} {...rest}>
+	<div class="mb-4 flex items-center gap-3">
+		{icon && <Icon name={icon as any} class="h-6 w-6 text-[#101828] dark:text-white shrink-0" />}
+		<h3 class="font-semibold text-[#101828] dark:text-white">
+			{title}
+		</h3>
+	</div>
+	<p class="text-sm leading-relaxed text-[#475467] dark:text-[#D0D5DD]">
+		{description}
+	</p>
+</div>

@@ -1,0 +1,50 @@
+---
+import { tv } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const collapsibleVariants = tv({
+	base: 'w-full divide-y divide-[#D0D5DD] dark:divide-[#344054]',
+});
+
+const itemVariants = tv({
+	base: 'py-4 first:pt-0 last:pb-0',
+});
+
+interface Props extends astroHTML.JSX.HTMLAttributes {
+	class?: string;
+	items: { title: string; content: string; isOpen?: boolean }[];
+}
+
+const { class: className, items, ...rest } = Astro.props;
+---
+
+<div class={collapsibleVariants({ class: className })} data-collapsible-list {...rest}>
+	{items.map((item, index) => {
+		const id = `collapsible-${Math.random().toString(36).substring(2, 9)}-${index}`;
+		return (
+			<div class={itemVariants()}>
+				<button
+					type="button"
+					class="flex w-full items-center justify-between text-left focus:outline-none group"
+					aria-expanded={item.isOpen ? 'true' : 'false'}
+					aria-controls={id}
+					onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); const content = document.getElementById(this.getAttribute('aria-controls')); if(content.style.display === 'none' || !content.style.display) { content.style.display = 'block'; } else { content.style.display = 'none'; } const icon = this.querySelector('svg'); if (this.getAttribute('aria-expanded') === 'true') { icon.style.transform = 'rotate(180deg)'; } else { icon.style.transform = 'rotate(0deg)'; }"
+				>
+					<span class="font-semibold text-[#101828] dark:text-white">{item.title}</span>
+					<Icon
+						name="ChevronDown"
+						class="h-5 w-5 text-[#101828] transition-transform duration-200 dark:text-white"
+						style={item.isOpen ? 'transform: rotate(180deg);' : ''}
+					/>
+				</button>
+				<div
+					id={id}
+					class="mt-2 text-[#475467] dark:text-[#98A2B3] text-base leading-relaxed"
+					style={{ display: item.isOpen ? 'block' : 'none' }}
+				>
+					{item.content}
+				</div>
+			</div>
+		);
+	})}
+</div>

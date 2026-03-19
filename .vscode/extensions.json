@@ -1,0 +1,21 @@
+{
+	"recommendations": [
+		"astro-build.astro-vscode",
+		"bradlc.vscode-tailwindcss",
+		"editorconfig.editorconfig",
+		"vitest.explorer",
+		"michaellalavedramunayco.angular-theme",
+		"biomejs.biome",
+		"vivaxy.vscode-conventional-commits",
+		"michaellalavedramunayco.devtrackpro",
+		"usernamehw.errorlens",
+		"miguelsolorio.fluent-icons",
+		"spacebox.monospace-idx-theme",
+		"michaellalavedramunayco.portman",
+		"yoavbls.pretty-ts-errors",
+		"stylelint.vscode-stylelint",
+		"redhat.vscode-yaml",
+		"midudev.better-svg"
+	],
+	"unwantedRecommendations": []
+}

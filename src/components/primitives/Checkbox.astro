@@ -1,0 +1,70 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const checkboxVariants = tv({
+	base: 'group flex items-start gap-3 cursor-pointer',
+});
+
+const indicatorVariants = tv({
+	base: 'relative flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all mt-0.5',
+	variants: {
+		variant: {
+			default:
+				'border-zinc-300 bg-white text-white peer-checked:border-zinc-900 peer-checked:bg-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:peer-checked:border-zinc-100 dark:peer-checked:bg-zinc-100 dark:peer-checked:text-zinc-900',
+			error:
+				'border-red-500 bg-white text-white peer-checked:bg-red-500 dark:bg-zinc-950 dark:peer-checked:bg-red-500',
+		},
+	},
+	defaultVariants: {
+		variant: 'default',
+	},
+});
+
+type CheckboxVariants = VariantProps<typeof checkboxVariants>;
+
+interface Props
+	extends Omit<HTMLAttributes<'input'>, 'type'>,
+		CheckboxVariants {
+	label?: string;
+	error?: string;
+	variant?: 'default' | 'error';
+}
+
+const { class: className, label, error, variant, id, ...rest } = Astro.props;
+const inputId = id || `checkbox-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<label class={checkboxVariants({ class: className })} for={inputId}>
+	<div class="relative flex items-center">
+		<input
+			type="checkbox"
+			id={inputId}
+			class="peer sr-only"
+			aria-invalid={!!error}
+			aria-describedby={error ? `${inputId}-error` : undefined}
+			{...rest}
+		/>
+		<div class={indicatorVariants({ variant: error ? 'error' : variant })}>
+			<Icon name="check" class="h-3.5 w-3.5 opacity-0 scale-50 transition-all peer-checked:opacity-100 group-has-[:checked]:opacity-100 group-has-[:checked]:scale-100 stroke-[3]" />
+		</div>
+	</div>
+
+	{
+		(label || error) && (
+			<div class="flex flex-col">
+				{label && (
+					<span class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+						{label}
+					</span>
+				)}
+				{error && (
+					<span id={`${inputId}-error`} class="mt-1 text-sm text-red-500 dark:text-red-400">
+						{error}
+					</span>
+				)}
+			</div>
+		)
+	}
+</label>

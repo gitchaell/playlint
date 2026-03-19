@@ -1,0 +1,375 @@
+---
+import { defaultLang } from '@/i18n/ui';
+import { type LangCode, useTranslations } from '@/i18n/utils';
+import Accordion from '../primitives/Accordion.astro';
+import Alert from '../primitives/Alert.astro';
+import BarChart from '../primitives/BarChart.astro';
+import Breadcrumb from '../primitives/Breadcrumb.astro';
+import Button from '../primitives/Button.astro';
+import ButtonGroup from '../primitives/ButtonGroup.astro';
+import Checkbox from '../primitives/Checkbox.astro';
+import CodeSnippet from '../primitives/CodeSnippet.astro';
+import CollapsibleList from '../primitives/CollapsibleList.astro';
+import CreditCard from '../primitives/CreditCard.astro';
+import DataPoint from '../primitives/DataPoint.astro';
+import DateTimeInput from '../primitives/DateTimeInput.astro';
+import DoughnutChart from '../primitives/DoughnutChart.astro';
+import FeatureSelector from '../primitives/FeatureSelector.astro';
+import FeatureTile from '../primitives/FeatureTile.astro';
+import FileUpload from '../primitives/FileUpload.astro';
+import IconButton from '../primitives/IconButton.astro';
+import Input from '../primitives/Input.astro';
+import LineChart from '../primitives/LineChart.astro';
+import Link from '../primitives/Link.astro';
+import Loader from '../primitives/Loader.astro';
+import Menu from '../primitives/Menu.astro';
+import MenuItem from '../primitives/MenuItem.astro';
+import Message from '../primitives/Message.astro';
+import Modal from '../primitives/Modal.astro';
+import NavBar from '../primitives/NavBar.astro';
+import Pagination from '../primitives/Pagination.astro';
+import PaymentMethod from '../primitives/PaymentMethod.astro';
+import Radio from '../primitives/Radio.astro';
+import Rating from '../primitives/Rating.astro';
+import SearchInput from '../primitives/SearchInput.astro';
+import Select from '../primitives/Select.astro';
+import SettingRow from '../primitives/SettingRow.astro';
+import Slider from '../primitives/Slider.astro';
+import Tab from '../primitives/Tab.astro';
+import TabList from '../primitives/TabList.astro';
+import Table from '../primitives/Table.astro';
+import TableCell from '../primitives/TableCell.astro';
+import TableHeadCell from '../primitives/TableHeadCell.astro';
+import Tag from '../primitives/Tag.astro';
+import Toggle from '../primitives/Toggle.astro';
+import Tooltip from '../primitives/Tooltip.astro';
+
+const lang = (Astro.currentLocale as LangCode) || defaultLang;
+const t = useTranslations(lang);
+---
+
+<section class="relative py-20 md:py-32 overflow-hidden border-t border-zinc-200 dark:border-zinc-800 bg-[#FAFAFA] dark:bg-[#0B101D]">
+	<div class="container mx-auto px-6 max-w-[1400px] relative z-10">
+		<div class="mb-16 text-center max-w-3xl mx-auto">
+			<h2 class="text-3xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">
+				{t("showcase.title")}
+			</h2>
+			<p class="text-lg text-zinc-600 dark:text-zinc-400">
+				{t("showcase.subtitle")}
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+
+			{/* Core Elements */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-1">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.core")}</h3>
+
+				<div class="flex flex-wrap gap-4 items-center">
+					<Button variant="primary">Primary</Button>
+					<Button variant="secondary">Secondary</Button>
+					<Button variant="outline">Outline</Button>
+					<Button variant="ghost">Ghost</Button>
+				</div>
+
+				<div class="flex flex-wrap gap-4 items-center mb-2">
+					<Button variant="primary" size="sm">Small</Button>
+					<Button variant="primary" pill={true}>Pill Button</Button>
+					<ButtonGroup class="ml-auto">
+						<Button variant="ghost" class="rounded-none bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100" aria-pressed="true">Left</Button>
+						<Button variant="ghost" class="rounded-none bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400">Mid</Button>
+						<Button variant="ghost" class="rounded-none bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400">Right</Button>
+					</ButtonGroup>
+				</div>
+
+				<div class="flex gap-3">
+					<IconButton icon="Mail" variant="outline" aria-label="Mail" />
+					<IconButton icon="Heart" variant="secondary" aria-label="Like" />
+					<IconButton icon="Settings" variant="primary" aria-label="Settings" />
+				</div>
+
+				<div class="mt-4 flex flex-col min-w-0 gap-3">
+					<Breadcrumb items={[{ label: 'Home', href: '#' }, { label: 'Dashboard', href: '#' }, { label: 'Settings' }]} />
+					<div class="flex flex-wrap gap-2 mt-2">
+						<Tag label="Design System" />
+						<Tag label="Components" variant="default" />
+						<Tag label="v1.0.0" removable={false} />
+					</div>
+				</div>
+
+				<div class="space-y-4">
+					<h3 class="text-sm font-medium text-zinc-500 uppercase tracking-wider">Links</h3>
+					<div class="flex flex-wrap gap-4 items-center">
+						<Link to="/[lang]" params={{ lang: 'en' }} class="text-blue-500 hover:underline">Type-safe Home Link</Link>
+						<Link to="/[lang]/login" params={{ lang: 'en' }} class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors font-medium">Type-safe Login Link</Link>
+						<Link to="/[lang]/docs" params={{ lang: 'en' }} class="text-emerald-500 hover:underline">Type-safe Docs Link</Link>
+						<Link to="/[lang]/pricing" params={{ lang: 'en' }} class="text-purple-500 hover:underline">Type-safe Pricing Link</Link>
+					</div>
+				</div>
+			</div>
+
+			{/* Form Inputs & Advanced Inputs */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-1">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.inputs")}</h3>
+
+				<Input placeholder="Standard Input" />
+				<Input placeholder="With Icons" iconLeft="Mail" iconRight="HelpCircle" />
+				<SearchInput placeholder="Search components..." />
+
+				<div class="grid grid-cols-2 gap-4 items-end">
+						<Select
+							label="Role"
+							placeholder="Select Role"
+							options={[
+								{label: 'Admin', value: 'admin'},
+								{label: 'Editor', value: 'editor'},
+								{label: 'Viewer', value: 'viewer'}
+							]}
+						/>
+					<DateTimeInput type="date" label="Start Date" />
+				</div>
+
+				<FileUpload label="Upload Avatar" />
+			</div>
+
+			{/* Controls & Selectors */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-1">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.controls")}</h3>
+
+				<div class="grid grid-cols-2 gap-x-4 gap-y-6">
+					<div class="flex items-center gap-3">
+						<Checkbox id="cb-demo" />
+						<label for="cb-demo" class="text-sm font-medium text-zinc-900 dark:text-white">Checkbox</label>
+					</div>
+					<div class="flex items-center gap-3">
+						<Toggle id="tg-demo" />
+						<label for="tg-demo" class="text-sm font-medium text-zinc-900 dark:text-white">Toggle</label>
+					</div>
+					<div class="flex items-center gap-3">
+						<Radio id="rd-1" name="rd-group" checked />
+						<label for="rd-1" class="text-sm font-medium text-zinc-900 dark:text-white">Radio 1</label>
+					</div>
+					<div class="flex items-center gap-3">
+						<Radio id="rd-2" name="rd-group" />
+						<label for="rd-2" class="text-sm font-medium text-zinc-900 dark:text-white">Radio 2</label>
+					</div>
+				</div>
+
+				<div class="mt-2">
+					<label class="block text-sm font-medium text-zinc-900 dark:text-white mb-2">Volume Slider</label>
+					<Slider min="0" max="100" value="75" />
+				</div>
+
+				<div class="mt-4 flex flex-col min-w-0 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
+					<SettingRow title="Push Notifications" description="Receive push notifications for mentions" checked={true} class="px-4 border-b-0" />
+				</div>
+			</div>
+
+			{/* Feedback & Overlay */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-2 xl:col-span-1">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.feedback")}</h3>
+
+				<Alert variant="success" title="Changes saved successfully!" icon="check-circle" />
+				<Alert variant="warning" title="Warning: Connection unstable" icon="triangle-alert" />
+
+				<div class="mt-4 grid grid-cols-2 gap-6 items-center">
+					<div class="flex flex-col min-w-0 gap-4 items-center p-4 bg-zinc-50 dark:bg-zinc-950 rounded-xl">
+						<Loader variant="spinner" size="lg" />
+						<Loader variant="progress" value={65} class="w-full mt-2" />
+					</div>
+					<div class="flex flex-col min-w-0 gap-6 items-center">
+						<Rating value={4} max={5} />
+						<Tooltip content="Provides extra context">
+							<span class="text-sm font-medium underline decoration-dashed cursor-help text-zinc-900 dark:text-white">Hover Tooltip</span>
+						</Tooltip>
+					</div>
+				</div>
+			</div>
+
+			{/* Navigation & Layouts */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-2 xl:col-span-2">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.navigation")}</h3>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div class="flex flex-col min-w-0 gap-6">
+						<TabList class="w-full">
+							<Tab variant="selector" icon="user" label="Profile" />
+							<Tab variant="selector" label="Account" />
+							<Tab variant="selector" label="Security" />
+						</TabList>
+
+						<Accordion
+							items={[
+								{ title: "What is Astro?", content: "Astro is a web framework for content-driven websites.", isOpen: true },
+								{ title: "Is it fast?", content: "Yes, it ships zero JS by default." }
+							]}
+						/>
+					</div>
+
+					<div class="flex flex-col min-w-0 gap-6">
+						<NavBar variant="mobileTop" class="rounded-t-lg border border-zinc-200 dark:border-zinc-800">
+							<IconButton icon="Menu" variant="ghost" aria-label="Menu" />
+							<span class="font-semibold dark:text-white">App Title</span>
+							<IconButton icon="Bell" variant="ghost" aria-label="Alerts" />
+						</NavBar>
+						<Pagination totalPages={10} currentPage={4} class="mx-auto" />
+
+						<div class="flex justify-center mt-2">
+							<Menu class="w-48 shadow-md">
+								<MenuItem>Profile</MenuItem>
+								<MenuItem>Settings</MenuItem>
+								<div class="h-px bg-zinc-200 dark:bg-zinc-800 my-1"></div>
+								<MenuItem class="text-red-500">Sign out</MenuItem>
+							</Menu>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* E-Commerce & Marketing */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-2 xl:col-span-2">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.complex")}</h3>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div class="flex flex-col min-w-0 gap-4">
+						<div class="flex flex-col min-w-0 gap-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 shadow-sm">
+							<h4 class="font-medium text-zinc-900 dark:text-zinc-100">Payment Details</h4>
+							<PaymentMethod label="Apple Pay" icon="smartphone" variant="selected" />
+							<div class="space-y-3">
+								<Input type="email" placeholder="Email Address" iconLeft="Mail" />
+								<Input type="text" placeholder="$0.00" />
+							</div>
+							<Button class="w-full mt-2" variant="primary">Pay with Apple Pay</Button>
+						</div>
+						<CreditCard
+							cardholder="JOHN DOE"
+							cardNumber="**** **** **** 4242"
+							expiry="12/28"
+							type="visa"
+						/>
+					</div>
+
+					<div class="flex flex-col min-w-0 gap-4">
+						<div class="grid grid-cols-2 gap-4">
+							<DataPoint value="99.9%" label="Uptime guarantee" />
+							<DataPoint value="24/7" label="Customer support" />
+						</div>
+						<FeatureTile
+							icon="Zap"
+							title="Lightning Fast"
+							description="Optimized for speed and performance out of the box."
+						/>
+							<div class="space-y-4">
+								<FeatureSelector name="onboarding-step" title="Create Account" description="Sign up for free" checked={true} icon="user" />
+								<FeatureSelector name="onboarding-step" title="Connect Repo" description="Import from GitHub" icon="github" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Data Display */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm xl:col-span-1">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.data")}</h3>
+
+				<LineChart title="Weekly Traffic" class="mb-4" />
+				<BarChart title="Monthly Revenue" class="mb-4" />
+				<DoughnutChart title="User Demographics" class="mb-4" />
+
+				<Message name="Alice" time="10:42 AM" content="Hey! Did you see the new components?" variant="received" />
+				<Message name="You" time="10:45 AM" content="Yes, they look fantastic! 🔥" variant="sent" />
+			</div>
+
+			{/* Overlays & Modals */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-2 xl:col-span-2">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">Modals & Overlays</h3>
+				<div class="flex items-center gap-4">
+					<Modal id="demo-modal" title="Edit Profile" description="Make changes to your profile here. Click save when you're done." triggerText="Open Dialog Modal">
+						<div class="space-y-4">
+							<Input placeholder="Username" value="@gitchaell" />
+							<Input type="email" placeholder="Email Address" value="hello@example.com" />
+							<Button variant="primary" class="w-full">Save changes</Button>
+						</div>
+					</Modal>
+				</div>
+			</div>
+
+			{/* Table & Code */}
+			<div class="group relative p-8 rounded-3xl bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 flex flex-col min-w-0 gap-6 shadow-sm lg:col-span-2 xl:col-span-3">
+				<h3 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">{t("showcase.code")}</h3>
+
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<div class="overflow-x-auto">
+						<Table>
+							<thead>
+								<tr>
+									<TableHeadCell><Checkbox id="select-all" /></TableHeadCell>
+									<TableHeadCell>User</TableHeadCell>
+									<TableHeadCell>Role</TableHeadCell>
+									<TableHeadCell>Status</TableHeadCell>
+									<TableHeadCell>Actions</TableHeadCell>
+								</tr>
+							</thead>
+								<tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm">
+								<tr>
+									<TableCell><Checkbox id="select-1" /></TableCell>
+									<TableCell>Jane Smith</TableCell>
+									<TableCell>
+										<Select
+											placeholder="Select Role"
+											options={[
+												{label: 'Admin', value: 'admin'},
+												{label: 'Editor', value: 'editor'},
+												{label: 'Viewer', value: 'viewer'}
+											]}
+											class="w-32 z-20"
+										/>
+									</TableCell>
+									<TableCell><Tag label="Active" class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" removable={false} /></TableCell>
+									<TableCell>
+										<div class="flex items-center gap-2">
+											<IconButton icon="Edit" variant="ghost" aria-label="Edit user" class="h-8 w-8" size="sm" />
+											<IconButton icon="Trash" variant="ghost" aria-label="Delete user" class="h-8 w-8 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300" size="sm" />
+										</div>
+									</TableCell>
+								</tr>
+								<tr>
+									<TableCell><Checkbox id="select-2" /></TableCell>
+									<TableCell>John Doe</TableCell>
+									<TableCell>
+										<Select
+											placeholder="Select Role"
+											options={[
+												{label: 'Admin', value: 'admin'},
+												{label: 'Editor', value: 'editor'},
+												{label: 'Viewer', value: 'viewer'}
+											]}
+											class="w-32 z-10"
+										/>
+									</TableCell>
+									<TableCell><Tag label="Offline" class="bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300" removable={false} /></TableCell>
+									<TableCell>
+										<div class="flex items-center gap-2">
+											<IconButton icon="Edit" variant="ghost" aria-label="Edit user" class="h-8 w-8" size="sm" />
+											<IconButton icon="Trash" variant="ghost" aria-label="Delete user" class="h-8 w-8 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300" size="sm" />
+										</div>
+									</TableCell>
+								</tr>
+							</tbody>
+						</Table>
+					</div>
+
+					<CodeSnippet
+						language="typescript"
+						filename="hello.ts"
+						code={`function greet(name: string) {
+  return \`Hello, \${name}!\`;
+}
+
+console.log(greet("World"));`}
+					/>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>

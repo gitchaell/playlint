@@ -1,0 +1,124 @@
+---
+import DocsSidebar from '@/components/common/DocsSidebar.astro';
+import Breadcrumb from '@/components/primitives/Breadcrumb.astro';
+import ComponentAlias from '@/components/primitives/Button.astro';
+import CodeSnippet from '@/components/primitives/CodeSnippet.astro';
+import { languages } from '@/i18n/ui';
+import type { LangCode } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+interface Props {
+	lang: LangCode;
+}
+
+const { lang } = Astro.params as Props;
+---
+
+<Layout
+	title="Button - Documentation"
+	description="Documentation for Button component"
+	lang={lang}
+>
+	<div class="container mx-auto flex w-full flex-col md:flex-row">
+		<DocsSidebar lang={lang} currentPath={Astro.url.pathname} />
+		<main class="flex-1 min-w-0 px-4 md:px-8 py-12 flex min-h-[calc(100vh-4rem)] flex-col max-w-4xl mx-auto">
+		<Breadcrumb
+			items={[
+				{ label: 'Home', href: `/${lang}` },
+				{ label: 'Docs', href: `/${lang}/docs` },
+				{ label: 'Components', href: `/${lang}/docs/components` },
+				{ label: 'Button' }
+			]}
+			class="mb-8"
+		/>
+
+		<h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">Button</h1>
+		<p class="text-lg text-zinc-600 dark:text-zinc-400 mb-8">
+			Buttons allow users to trigger actions or events with a single click. Our Button component includes various variants and sizes to cover all common use cases.
+		</p>
+
+		<section class="mb-12">
+			<h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Example Usage</h2>
+			<div class="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg mb-8 bg-white dark:bg-zinc-900 flex gap-4">
+				<ComponentAlias>Click me</ComponentAlias>
+			</div>
+
+            <h3 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4 mt-8">Variants</h3>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-4">
+                The button component comes in four distinct variants: primary, secondary, outline, and ghost.
+            </p>
+            <div class="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg mb-8 bg-white dark:bg-zinc-900 flex gap-4 flex-wrap">
+                <ComponentAlias variant="primary">Primary</ComponentAlias>
+                <ComponentAlias variant="secondary">Secondary</ComponentAlias>
+                <ComponentAlias variant="outline">Outline</ComponentAlias>
+                <ComponentAlias variant="ghost">Ghost</ComponentAlias>
+            </div>
+            <CodeSnippet
+                code={`<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>`}
+                language="astro"
+                filename="Variants.astro"
+            />
+
+            <h3 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4 mt-12">Sizes</h3>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-4">
+                Available sizes are small (sm), medium (md), and large (lg).
+            </p>
+            <div class="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg mb-8 bg-white dark:bg-zinc-900 flex gap-4 items-center flex-wrap">
+                <ComponentAlias size="sm">Small</ComponentAlias>
+                <ComponentAlias size="md">Medium</ComponentAlias>
+                <ComponentAlias size="lg">Large</ComponentAlias>
+            </div>
+            <CodeSnippet
+                code={`<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>`}
+                language="astro"
+                filename="Sizes.astro"
+            />
+
+            <h3 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4 mt-12">Disabled State</h3>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-4">
+                Buttons can be disabled to prevent user interaction.
+            </p>
+            <div class="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg mb-8 bg-white dark:bg-zinc-900 flex gap-4 flex-wrap">
+                <ComponentAlias disabled>Disabled Primary</ComponentAlias>
+                <ComponentAlias variant="outline" disabled>Disabled Outline</ComponentAlias>
+            </div>
+            <CodeSnippet
+                code={`<Button disabled>Disabled Primary</Button>
+<Button variant="outline" disabled>Disabled Outline</Button>`}
+                language="astro"
+                filename="Disabled.astro"
+            />
+		</section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">How to Use</h2>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-4">
+                To use the Button component, import it from its location and pass the required props. Any standard HTML button attributes are supported.
+            </p>
+            <CodeSnippet
+                code={`import Button from '@/components/primitives/Button.astro';
+
+<Button
+  variant="primary"
+  size="md"
+  type="submit"
+  onclick="alert('Hello!')"
+>
+  Submit Form
+</Button>`}
+                language="astro"
+                filename="example.astro"
+            />
+        </section>
+	</main>
+	</div>
+</Layout>

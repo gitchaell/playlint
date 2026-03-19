@@ -1,0 +1,93 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const creditCardVariants = tv({
+	base: 'relative h-56 w-96 rounded-2xl p-6 text-white shadow-xl overflow-hidden',
+	variants: {
+		variant: {
+			dark: 'bg-[#0B101B]',
+			// Additional variants could be added here (e.g. gradient, light, brand)
+		},
+	},
+	defaultVariants: {
+		variant: 'dark',
+	},
+});
+
+type CreditCardVariants = VariantProps<typeof creditCardVariants>;
+
+interface Props extends HTMLAttributes<'div'>, CreditCardVariants {
+	cardholder: string;
+	cardNumber: string;
+	expiry: string;
+	type?: 'visa' | 'mastercard' | 'amex' | 'generic';
+	companyName?: string;
+}
+
+const {
+	variant,
+	cardholder,
+	cardNumber,
+	expiry,
+	type = 'generic',
+	companyName = 'ACME',
+	class: className,
+	...rest
+} = Astro.props;
+
+// Basic formatting for credit card number (hide middle digits if desired, or format with spaces)
+const formattedNumber = cardNumber
+	? cardNumber
+			.replace(/\s+/g, '')
+			.replace(/(\d{4})/g, '$1 ')
+			.trim()
+	: '';
+---
+
+<div class={creditCardVariants({ variant, class: className })} {...rest}>
+	<!-- Top Row -->
+	<div class="flex items-start justify-between">
+		<!-- Company Logo Placeholder -->
+		<div class="flex items-center rounded border border-white/40 px-2 py-1">
+			<span class="font-bold tracking-wider">{companyName}</span>
+		</div>
+
+		<!-- Contactless Icon -->
+		<Icon name="Wifi" class="h-6 w-6 opacity-80 rotate-90" />
+	</div>
+
+	<!-- Bottom Content -->
+	<div class="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+		<div class="space-y-4">
+			<div class="flex gap-6 text-sm opacity-80">
+				<div>
+					<div class="mb-1 text-[10px] uppercase tracking-wider opacity-60 sr-only">Cardholder Name</div>
+					<div class="font-medium tracking-wide">{cardholder}</div>
+				</div>
+				<div>
+					<div class="mb-1 text-[10px] uppercase tracking-wider opacity-60 sr-only">Expiry Date</div>
+					<div class="font-medium tracking-wide">{expiry}</div>
+				</div>
+			</div>
+
+			<div class="font-mono text-xl tracking-widest text-white/90">
+				{formattedNumber}
+			</div>
+		</div>
+
+		<!-- Card Type Logo Indicator -->
+		<div class="flex h-8 items-center justify-end opacity-80">
+			{type === 'visa' && (
+				<div class="font-bold italic text-xl tracking-tighter">VISA</div>
+			)}
+			{type === 'mastercard' && (
+				<div class="flex">
+					<div class="h-8 w-8 rounded-full bg-white opacity-60"></div>
+					<div class="h-8 w-8 -ml-3 rounded-full bg-white opacity-40"></div>
+				</div>
+			)}
+		</div>
+	</div>
+</div>

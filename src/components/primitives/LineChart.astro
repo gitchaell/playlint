@@ -1,0 +1,48 @@
+---
+import Chart from './Chart.astro';
+
+interface Props {
+	class?: string;
+	title?: string;
+}
+
+const { class: className, title = 'Weekly Traffic' } = Astro.props;
+
+const data = {
+	labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+	datasets: [
+		{
+			label: 'Visitors',
+			data: [200, 350, 280, 500, 420, 600, 550],
+			borderColor: '#FF5D01', // astro orange
+			backgroundColor: 'rgba(255, 93, 1, 0.1)',
+			borderWidth: 2,
+			tension: 0.4,
+			fill: true,
+			pointRadius: 0,
+			pointHoverRadius: 4,
+		},
+	],
+};
+
+const options = {
+	plugins: {
+		legend: {
+			display: false,
+		},
+	},
+	scales: {
+		x: {
+			grid: { display: false },
+			border: { display: false },
+		},
+		y: {
+			display: false,
+			grid: { display: false },
+			border: { display: false },
+		},
+	},
+};
+---
+
+<Chart type="line" data={data} options={options} title={title} class={className} />

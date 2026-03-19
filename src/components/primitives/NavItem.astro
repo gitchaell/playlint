@@ -1,0 +1,77 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const navItemVariants = tv({
+	base: 'group flex cursor-pointer select-none items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+	variants: {
+		variant: {
+			sidebar:
+				'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 focus:bg-zinc-100 focus:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:focus:bg-zinc-800 dark:focus:text-zinc-100',
+			sidebarActive:
+				'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100',
+			bottomTab:
+				'flex-col justify-center gap-1 bg-transparent px-1 py-1 text-xs font-normal text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100',
+			bottomTabActive:
+				'flex-col justify-center gap-1 bg-transparent px-1 py-1 text-xs font-semibold text-zinc-900 dark:text-zinc-100',
+		},
+	},
+	defaultVariants: {
+		variant: 'sidebar',
+	},
+});
+
+interface Props extends VariantProps<typeof navItemVariants> {
+	class?: string;
+	href?: string;
+	icon?: string;
+	label: string;
+	showChevron?: boolean;
+	disabled?: boolean;
+}
+
+const {
+	class: className,
+	variant = 'sidebar',
+	href = '#',
+	icon,
+	label,
+	showChevron = true,
+	disabled,
+} = Astro.props;
+
+const isSidebar = variant === 'sidebar' || variant === 'sidebarActive';
+const isBottomTab = variant === 'bottomTab' || variant === 'bottomTabActive';
+const isActive = variant === 'sidebarActive' || variant === 'bottomTabActive';
+---
+
+<a
+	href={href}
+	class={navItemVariants({ variant, class: className })}
+	aria-disabled={disabled}
+	aria-current={isActive ? 'page' : undefined}
+	data-disabled={disabled ? '' : undefined}
+	tabindex={disabled ? -1 : 0}
+>
+	{isSidebar && (
+		<div class="flex items-center gap-3">
+			{icon && <Icon name={icon} class="h-5 w-5" />}
+			<span>{label}</span>
+		</div>
+	)}
+	{isSidebar && showChevron && (
+		<Icon name="ChevronRight" class="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+	)}
+
+	{isBottomTab && (
+		<>
+			{icon && (
+				<Icon
+					name={icon}
+					class={`h-6 w-6 ${isActive ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-400 dark:text-zinc-500'}`}
+				/>
+			)}
+			<span>{label}</span>
+		</>
+	)}
+</a>

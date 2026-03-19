@@ -1,0 +1,32 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const dataPointVariants = tv({
+	base: 'flex flex-col items-start gap-1',
+});
+
+type DataPointVariants = VariantProps<typeof dataPointVariants>;
+
+interface Props extends HTMLAttributes<'div'>, DataPointVariants {
+	value: string;
+	label: string;
+	description?: string;
+}
+
+const { value, label, description, class: className, ...rest } = Astro.props;
+---
+
+<div class={dataPointVariants({ class: className })} {...rest}>
+	<div class="text-4xl md:text-5xl font-bold tracking-tight text-[#101828] dark:text-white">
+		{value}
+	</div>
+	<div class="text-sm font-medium text-[#667085] dark:text-[#98A2B3]">
+		{label}
+	</div>
+	{description && (
+		<p class="mt-2 text-sm text-[#475467] dark:text-[#D0D5DD] leading-relaxed max-w-xs">
+			{description}
+		</p>
+	)}
+</div>

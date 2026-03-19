@@ -1,0 +1,69 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const paymentMethodVariants = tv({
+	base: 'flex flex-col items-start justify-between rounded-xl p-4 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[140px] w-full text-left',
+	variants: {
+		variant: {
+			default:
+				'border border-zinc-200 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700',
+			selected:
+				'border-2 border-zinc-900 bg-white dark:border-zinc-100 dark:bg-zinc-900',
+		},
+	},
+	defaultVariants: {
+		variant: 'default',
+	},
+});
+
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props
+	extends HTMLAttributes<'button'>,
+		VariantProps<typeof paymentMethodVariants> {
+	label: string;
+	icon: string;
+	action?: string;
+	method?: 'get' | 'post' | 'put' | 'delete';
+	target?: string;
+	swap?: 'inner' | 'outer' | 'prepend' | 'append';
+}
+
+const {
+	class: className,
+	variant = 'default',
+	label,
+	icon,
+	action,
+	method = 'get',
+	target,
+	swap = 'inner',
+	...rest
+} = Astro.props;
+
+const isSelected = variant === 'selected';
+
+// Set up custom action attributes if 'action' is provided
+const actionProps = action
+	? {
+			'data-action': action,
+			'data-method': method,
+			'data-target': target,
+			'data-swap': swap,
+		}
+	: {};
+---
+
+<button
+	type="button"
+	class={paymentMethodVariants({ variant, class: className })}
+	aria-pressed={isSelected}
+	{...actionProps}
+	{...rest}
+>
+	<div class="flex h-8 w-8 items-center justify-center rounded bg-zinc-100 dark:bg-zinc-800">
+		<Icon name={icon as any} class="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
+	</div>
+	<span class={`mt-auto text-sm font-semibold text-zinc-900 dark:text-zinc-100`}>{label}</span>
+</button>

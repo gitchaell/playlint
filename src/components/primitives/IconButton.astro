@@ -1,0 +1,77 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const iconButtonVariants = tv({
+	base: 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-zinc-950 disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
+	variants: {
+		variant: {
+			primary:
+				'bg-[#0C111D] text-white hover:bg-[#0C111D]/90 focus:ring-[#0C111D] dark:bg-white dark:text-[#0C111D] dark:hover:bg-zinc-200 dark:focus:ring-white disabled:bg-[#98A2B3] dark:disabled:bg-[#475467]',
+			secondary:
+				'bg-[#F2F4F7] text-[#101828] hover:bg-[#E4E7EC] focus:ring-[#E4E7EC] dark:bg-[#1D2939] dark:text-white dark:hover:bg-[#344054] dark:focus:ring-[#344054] disabled:text-[#98A2B3] dark:disabled:text-[#475467]',
+			outline:
+				'border border-[#101828] bg-transparent text-[#101828] hover:bg-[#F2F4F7] focus:ring-[#101828] dark:border-white dark:text-white dark:hover:bg-[#1D2939] dark:focus:ring-white disabled:border-[#D0D5DD] disabled:text-[#98A2B3] dark:disabled:border-[#344054] dark:disabled:text-[#475467]',
+			ghost:
+				'bg-transparent text-[#101828] hover:bg-[#F2F4F7] focus:ring-[#101828] dark:text-white dark:hover:bg-[#1D2939] dark:focus:ring-white disabled:text-[#98A2B3] dark:disabled:text-[#475467]',
+		},
+		size: {
+			sm: 'h-8 w-8',
+			md: 'h-10 w-10',
+			lg: 'h-12 w-12',
+		},
+		shape: {
+			default: 'rounded-md',
+			circle: 'rounded-full',
+		},
+	},
+	defaultVariants: {
+		variant: 'primary',
+		size: 'md',
+		shape: 'default',
+	},
+});
+
+type IconButtonVariants = VariantProps<typeof iconButtonVariants>;
+
+interface Props extends HTMLAttributes<'button'>, IconButtonVariants {
+	icon: string;
+	action?: string;
+	method?: 'get' | 'post' | 'put' | 'delete';
+	target?: string;
+	swap?: 'inner' | 'outer' | 'prepend' | 'append';
+}
+
+const {
+	variant,
+	size,
+	shape,
+	icon,
+	action,
+	method = 'get',
+	target,
+	swap = 'inner',
+	class: className,
+	...rest
+} = Astro.props;
+
+// Set up custom action attributes if 'action' is provided
+const actionProps = action
+	? {
+			'data-action': action,
+			'data-method': method,
+			'data-target': target,
+			'data-swap': swap,
+		}
+	: {};
+---
+
+<button
+	class={iconButtonVariants({ variant, size, shape, class: className })}
+	{...actionProps}
+	{...rest}
+>
+	<Icon name={icon as any} class="h-5 w-5" />
+	<span class="sr-only">Icon button</span>
+</button>

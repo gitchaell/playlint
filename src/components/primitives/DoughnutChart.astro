@@ -1,0 +1,42 @@
+---
+import Chart from './Chart.astro';
+
+interface Props {
+	class?: string;
+	title?: string;
+}
+
+const { class: className, title = 'Traffic Sources' } = Astro.props;
+
+const data = {
+	labels: ['Direct', 'Social', 'Referral'],
+	datasets: [
+		{
+			data: [300, 50, 100],
+			backgroundColor: [
+				'#71717a', // zinc-500
+				'#FF5D01', // astro orange
+				'#d4d4d8', // zinc-300
+			],
+			borderWidth: 0,
+			hoverOffset: 4,
+		},
+	],
+};
+
+const options = {
+	plugins: {
+		legend: {
+			position: 'right',
+			labels: {
+				usePointStyle: true,
+				boxWidth: 8,
+				padding: 20,
+			},
+		},
+	},
+	cutout: '75%',
+};
+---
+
+<Chart type="doughnut" data={data} options={options} title={title} class={className} />

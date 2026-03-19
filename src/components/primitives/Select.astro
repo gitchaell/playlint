@@ -1,0 +1,157 @@
+---
+import { tv } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const selectVariants = tv({
+	base: 'relative w-full',
+});
+
+const triggerVariants = tv({
+	base: 'flex w-full items-center justify-between rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 transition-colors hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900 dark:focus:ring-zinc-100 dark:focus:ring-offset-zinc-950',
+});
+
+const dropdownVariants = tv({
+	base: 'absolute z-50 mt-1 hidden w-full overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-lg dark:border-zinc-800 dark:bg-zinc-950',
+});
+
+const optionVariants = tv({
+	base: 'cursor-pointer px-3 py-2 text-sm text-zinc-900 transition-colors hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-900',
+});
+
+interface Option {
+	value: string;
+	label: string;
+}
+
+interface Props {
+	class?: string;
+	options: Option[];
+	placeholder?: string;
+	name?: string;
+	id?: string;
+	label?: string;
+}
+
+import { defaultLang } from '@/i18n/ui';
+import { type LangCode, useTranslations } from '@/i18n/utils';
+
+const lang = (Astro.currentLocale as LangCode) || defaultLang;
+const t = useTranslations(lang);
+
+const {
+	class: className,
+	options = [],
+	placeholder = t('select.placeholder'),
+	name,
+	id,
+	label,
+	...rest
+} = Astro.props;
+
+const uniqueId = id || `select-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<div class={selectVariants({ class: className })} data-select={uniqueId} {...rest}>
+	<!-- Hidden input for form submission -->
+	<input type="hidden" name={name} id={uniqueId} />
+
+	{label && (
+		<label class="block text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-1.5" for={uniqueId}>
+			{label}
+		</label>
+	)}
+
+	<button
+		type="button"
+		class={triggerVariants()}
+		aria-haspopup="listbox"
+		aria-expanded="false"
+		data-select-trigger
+	>
+		<span data-select-value>{placeholder}</span>
+		<Icon name="chevrons-up-down" class="h-4 w-4 opacity-50" />
+	</button>
+
+	<div class={dropdownVariants()} role="listbox" data-select-dropdown>
+		<div class="max-h-60 overflow-auto py-1">
+			{
+				options.map((option) => (
+					<div
+						role="option"
+						class={optionVariants()}
+						data-value={option.value}
+						data-label={option.label}
+					>
+						{option.label}
+					</div>
+				))
+			}
+		</div>
+	</div>
+</div>
+
+<script>
+	const initSelects = () => {
+		const selects = document.querySelectorAll('[data-select]');
+
+		selects.forEach(select => {
+			const trigger = select.querySelector('[data-select-trigger]') as HTMLButtonElement;
+			const dropdown = select.querySelector('[data-select-dropdown]') as HTMLDivElement;
+			const valueSpan = select.querySelector('[data-select-value]') as HTMLSpanElement;
+			const hiddenInput = select.querySelector('input[type="hidden"]') as HTMLInputElement;
+			const options = select.querySelectorAll('[role="option"]');
+
+			if (!trigger || !dropdown) return;
+
+			// Toggle dropdown
+			trigger.addEventListener('click', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+				// Close all other selects
+				document.querySelectorAll('[data-select-dropdown]').forEach(d => d.classList.add('hidden'));
+				document.querySelectorAll('[data-select-trigger]').forEach(t => t.setAttribute('aria-expanded', 'false'));
+
+				if (!isExpanded) {
+					dropdown.classList.remove('hidden');
+					trigger.setAttribute('aria-expanded', 'true');
+				}
+			});
+
+			// Select option
+			options.forEach(option => {
+				option.addEventListener('click', () => {
+					const value = option.getAttribute('data-value') || '';
+					const label = option.getAttribute('data-label') || '';
+
+					valueSpan.textContent = label;
+					if (hiddenInput) hiddenInput.value = value;
+
+					dropdown.classList.add('hidden');
+					trigger.setAttribute('aria-expanded', 'false');
+
+					// Remove active styling from all, add to this one
+					options.forEach(o => o.classList.remove('bg-zinc-100', 'dark:bg-zinc-900'));
+					option.classList.add('bg-zinc-100', 'dark:bg-zinc-900');
+
+					// Dispatch change event on hidden input for form listeners
+					if (hiddenInput) {
+						hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+					}
+				});
+			});
+		});
+
+		// Close clicking outside
+		document.addEventListener('click', (e) => {
+			const isClickInside = (e.target as Element).closest('[data-select]');
+			if (!isClickInside) {
+				document.querySelectorAll('[data-select-dropdown]').forEach(d => d.classList.add('hidden'));
+				document.querySelectorAll('[data-select-trigger]').forEach(t => t.setAttribute('aria-expanded', 'false'));
+			}
+		});
+	};
+
+	document.addEventListener('astro:page-load', initSelects);
+</script>

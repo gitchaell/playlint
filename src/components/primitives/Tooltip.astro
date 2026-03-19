@@ -1,0 +1,41 @@
+---
+import { tv } from 'tailwind-variants';
+
+const tooltipContainerVariants = tv({
+	base: 'group relative inline-block',
+});
+
+// Reduced delay via group-hover:delay-100 (100ms instead of 300ms)
+const tooltipContentVariants = tv({
+	base: 'pointer-events-none absolute z-50 whitespace-nowrap rounded bg-zinc-900 px-2 py-1 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100 group-hover:delay-100 dark:bg-zinc-100 dark:text-zinc-900',
+	variants: {
+		position: {
+			top: 'bottom-full left-1/2 -translate-x-1/2 -translate-y-2 mb-1',
+			bottom: 'top-full left-1/2 -translate-x-1/2 translate-y-2 mt-1',
+			left: 'right-full top-1/2 -translate-y-1/2 -translate-x-2 mr-1',
+			right: 'left-full top-1/2 -translate-y-1/2 translate-x-2 ml-1',
+		},
+	},
+	defaultVariants: {
+		position: 'top',
+	},
+});
+
+interface Props {
+	class?: string;
+	content: string;
+	position?: 'top' | 'bottom' | 'left' | 'right';
+}
+
+const { class: className, content, position, ...rest } = Astro.props;
+---
+
+<div class={tooltipContainerVariants({ class: className })} {...rest}>
+	<slot />
+	<div
+		class={tooltipContentVariants({ position })}
+		role="tooltip"
+	>
+		{content}
+	</div>
+</div>

@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const toggleVariants = tv({
+	base: 'peer sr-only',
+});
+
+type ToggleVariants = VariantProps<typeof toggleVariants>;
+
+interface Props extends Omit<HTMLAttributes<'input'>, 'type'>, ToggleVariants {}
+
+const { class: className, id, ...rest } = Astro.props;
+
+// Ensure we have an ID for the label association
+const inputId = id || `toggle-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<label for={inputId} class="relative inline-flex items-center cursor-pointer">
+	<input type="checkbox" id={inputId} class={toggleVariants({ class: className })} {...rest} />
+	<div
+		class="w-11 h-6 bg-zinc-200 dark:bg-zinc-800 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-zinc-900 dark:peer-focus:ring-white rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-zinc-900 after:border-white dark:after:border-zinc-900 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-zinc-900 dark:peer-checked:bg-white dark:peer-checked:after:bg-zinc-900 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"
+	>
+	</div>
+</label>

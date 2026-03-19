@@ -1,0 +1,17 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const menuVariants = tv({
+	base: 'flex flex-col py-1 bg-white border border-gray-200 rounded-md shadow-sm min-w-[200px] dark:bg-zinc-950 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100',
+});
+
+interface Props extends VariantProps<typeof menuVariants> {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={menuVariants({ class: className })} role="menu" tabindex="-1">
+	<slot />
+</div>

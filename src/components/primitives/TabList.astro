@@ -1,0 +1,39 @@
+---
+import { tv } from 'tailwind-variants';
+
+const tabListVariants = tv({
+	base: 'inline-flex items-center justify-center rounded-lg bg-zinc-100 p-1 text-zinc-500 dark:bg-zinc-900/50 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800',
+});
+
+interface Props {
+	class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class={tabListVariants({ class: className })} role="tablist" {...rest}>
+	<slot />
+</div>
+
+<script>
+	const initTabs = () => {
+		const tabLists = document.querySelectorAll('[role="tablist"]');
+		tabLists.forEach(list => {
+			const tabs = list.querySelectorAll('[role="tab"]');
+			tabs.forEach(tab => {
+				tab.addEventListener('click', () => {
+					// Remove active from all
+					tabs.forEach(t => {
+						t.setAttribute('aria-selected', 'false');
+						t.classList.remove('bg-white', 'text-zinc-950', 'shadow-sm', 'dark:bg-zinc-800', 'dark:text-zinc-50');
+					});
+					// Add active to clicked
+					tab.setAttribute('aria-selected', 'true');
+					tab.classList.add('bg-white', 'text-zinc-950', 'shadow-sm', 'dark:bg-zinc-800', 'dark:text-zinc-50');
+				});
+			});
+		});
+	};
+	document.addEventListener('astro:page-load', initTabs);
+</script>

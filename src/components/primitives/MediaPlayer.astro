@@ -1,0 +1,60 @@
+---
+import { tv } from 'tailwind-variants';
+import IconButton from './IconButton.astro';
+
+const mediaPlayerVariants = tv({
+	base: 'w-full max-w-md rounded-2xl bg-white p-4 shadow-sm border border-zinc-200 dark:border-zinc-800 dark:bg-zinc-950',
+});
+
+interface Props {
+	class?: string;
+	title?: string;
+	artist?: string;
+	coverImage?: string;
+}
+
+const {
+	class: className,
+	title = 'Unknown Track',
+	artist = 'Unknown Artist',
+	coverImage = '/designs/18.png', // Default placeholder
+	...rest
+} = Astro.props;
+---
+
+<div class={mediaPlayerVariants({ class: className })} {...rest}>
+	<div class="flex items-center gap-4">
+		<img
+			src={coverImage}
+			alt={`${title} cover`}
+			class="h-16 w-16 rounded-lg object-cover shadow-sm"
+			width="64"
+			height="64"
+		/>
+		<div class="flex-1">
+			<h3 class="font-semibold text-zinc-900 dark:text-zinc-100">{title}</h3>
+			<p class="text-sm text-zinc-500 dark:text-zinc-400">{artist}</p>
+		</div>
+		<IconButton icon="heart" variant="ghost" class="text-zinc-500 dark:text-zinc-400 hover:text-red-500 dark:hover:text-red-400" />
+	</div>
+
+	<div class="mt-4 space-y-2">
+		<div class="h-1.5 w-full cursor-pointer rounded-full bg-zinc-200 dark:bg-zinc-800">
+			<div class="h-full w-1/3 rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+		</div>
+		<div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+			<span>1:23</span>
+			<span>-2:37</span>
+		</div>
+	</div>
+
+	<div class="mt-4 flex items-center justify-between">
+		<IconButton icon="shuffle" variant="ghost" size="sm" class="text-zinc-500 dark:text-zinc-400" />
+		<div class="flex items-center gap-4">
+			<IconButton icon="skip-back" variant="ghost" />
+			<IconButton icon="play" variant="primary" class="rounded-full h-12 w-12" />
+			<IconButton icon="skip-forward" variant="ghost" />
+		</div>
+		<IconButton icon="repeat" variant="ghost" size="sm" class="text-zinc-500 dark:text-zinc-400" />
+	</div>
+</div>

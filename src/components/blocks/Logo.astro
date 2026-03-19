@@ -1,0 +1,69 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const logoVariants = tv({
+	base: 'flex items-center font-title font-bold tracking-tight',
+	variants: {
+		size: {
+			sm: 'gap-1.5 text-base',
+			md: 'gap-2 text-lg',
+			lg: 'gap-3 text-2xl',
+			xl: 'gap-4 text-4xl',
+		},
+	},
+	defaultVariants: {
+		size: 'md',
+	},
+});
+
+const iconContainerVariants = tv({
+	base: 'flex items-center justify-center rounded-md bg-linear-to-tr from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400',
+	variants: {
+		size: {
+			sm: 'h-5 w-5 rounded',
+			md: 'h-6 w-6 rounded-md',
+			lg: 'h-8 w-8 rounded-lg',
+			xl: 'h-12 w-12 rounded-xl',
+		},
+	},
+	defaultVariants: {
+		size: 'md',
+	},
+});
+
+const iconVariants = tv({
+	variants: {
+		size: {
+			sm: 'h-4 w-4',
+			md: 'h-5 w-5',
+			lg: 'h-6 w-6',
+			xl: 'h-8 w-8',
+		},
+	},
+	defaultVariants: {
+		size: 'md',
+	},
+});
+
+interface Props extends VariantProps<typeof logoVariants> {
+	class?: string;
+	showText?: boolean;
+}
+
+const { class: className, size, showText = true, ...rest } = Astro.props;
+---
+
+<div class={logoVariants({ size, class: className })} {...rest}>
+	<div class={iconContainerVariants({ size })}>
+		<img
+			src="/favicon.svg"
+			alt="Astro Logo"
+			class={iconVariants({ size })}
+		/>
+	</div>
+	{showText && (
+		<span class="bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400">
+			Astro<span class="font-light">Template</span>
+		</span>
+	)}
+</div>

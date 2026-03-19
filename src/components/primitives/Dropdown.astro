@@ -1,0 +1,48 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tv, type VariantProps } from 'tailwind-variants';
+import Icon from './Icon.astro';
+
+const selectVariants = tv({
+	base: 'flex h-11 w-full appearance-none items-center justify-between rounded-md border border-[#101828] bg-white px-3 py-2 text-sm text-[#101828] transition-colors focus:outline-none focus:ring-2 focus:ring-[#101828] focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#F2F4F7] disabled:text-[#98A2B3] disabled:border-[#D0D5DD] dark:border-white dark:bg-[#1D2939] dark:text-white dark:focus:ring-white dark:disabled:bg-[#344054] dark:disabled:text-[#475467] dark:disabled:border-[#344054] cursor-pointer',
+});
+
+type SelectVariants = VariantProps<typeof selectVariants>;
+
+interface Props extends HTMLAttributes<'select'>, SelectVariants {
+	label?: string;
+	error?: string;
+}
+
+const { label, error, class: className, id, ...rest } = Astro.props;
+
+// Ensure we have an ID for label association
+const selectId = id || `select-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<div class="space-y-1 w-full">
+	{label && (
+		<label for={selectId} class="block text-sm font-medium text-[#344054] dark:text-[#E4E7EC]">
+			{label}
+		</label>
+	)}
+
+	<div class="relative">
+		<select
+			id={selectId}
+			class={selectVariants({ class: className })}
+			{...rest}
+		>
+			<slot />
+		</select>
+		<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-[#101828] dark:text-white">
+			<Icon name="ChevronsUpDown" class="h-4 w-4" />
+		</div>
+	</div>
+
+	{error && (
+		<p class="text-sm text-red-500 dark:text-red-400">
+			{error}
+		</p>
+	)}
+</div>

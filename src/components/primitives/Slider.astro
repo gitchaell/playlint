@@ -1,0 +1,100 @@
+---
+import { tv } from 'tailwind-variants';
+
+const sliderVariants = tv({
+	base: 'w-full h-2 rounded-full appearance-none outline-none focus:outline-none focus:ring-2 focus:ring-offset-2',
+	variants: {
+		disabled: {
+			true: 'opacity-50 cursor-not-allowed',
+			false: 'cursor-pointer',
+		},
+	},
+	defaultVariants: {
+		disabled: false,
+	},
+});
+
+interface Props extends astroHTML.JSX.InputHTMLAttributes {
+	class?: string;
+	action?: string;
+	method?: 'get' | 'post' | 'put' | 'delete';
+	target?: string;
+	swap?: 'inner' | 'outer' | 'prepend' | 'append';
+}
+
+const {
+	class: className,
+	disabled,
+	action,
+	method = 'get',
+	target,
+	swap = 'inner',
+	...rest
+} = Astro.props;
+
+// Set up custom action attributes if 'action' is provided
+const actionProps = action
+	? {
+			'data-action': action,
+			'data-method': method,
+			'data-target': target,
+			'data-swap': swap,
+		}
+	: {};
+---
+
+<style>
+	/* Custom styles for the slider thumb since Tailwind classes for webkit slider thumb can be finicky */
+	input[type=range]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #ffffff;
+		border: 2px solid #101828;
+		cursor: pointer;
+	}
+
+	.dark input[type=range]::-webkit-slider-thumb {
+		background: #0B101D;
+		border: 2px solid #ffffff;
+	}
+
+	input[type=range]::-moz-range-thumb {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #ffffff;
+		border: 2px solid #101828;
+		cursor: pointer;
+	}
+
+	.dark input[type=range]::-moz-range-thumb {
+		background: #0B101D;
+		border: 2px solid #ffffff;
+	}
+</style>
+
+<input
+	type="range"
+	class={sliderVariants({ disabled: !!disabled, class: className }) + ' bg-[#F2F4F7] dark:bg-[#344054]'}
+	style="background: linear-gradient(to right, #101828 var(--val, 50%), #F2F4F7 var(--val, 50%));"
+	disabled={disabled}
+	oninput="this.style.setProperty('--val', `calc(${(this.value - this.min) / (this.max - this.min) * 100}%)`)"
+	{...actionProps}
+	{...rest}
+/>
+
+<script>
+	// Initialize CSS variable for gradient on load
+	document.addEventListener('astro:page-load', () => {
+		const sliders = document.querySelectorAll('input[type="range"]');
+		sliders.forEach(slider => {
+			if (slider instanceof HTMLInputElement) {
+				const val = (Number(slider.value) - Number(slider.min || 0)) / (Number(slider.max || 100) - Number(slider.min || 0)) * 100;
+				slider.style.setProperty('--val', `${val}%`);
+			}
+		});
+	});
+</script>
