@@ -38,9 +38,8 @@ import IconButton from '../primitives/IconButton.astro';
 	document.addEventListener("astro:page-load", () => {
 		const container = document.getElementById("theme-toggle-container");
 		if (container) {
-			// Attach listener to container, or both buttons
-			const buttons = container.querySelectorAll("button");
-			buttons.forEach(btn => btn.addEventListener("click", handleToggleClick));
+			// Attach listener to container
+			container.addEventListener("click", handleToggleClick);
 		}
 	});
 </script>
