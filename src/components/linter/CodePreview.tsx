@@ -16,7 +16,7 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
 
     return jsonString.split('\n').map((line, i) => {
       // Basic syntax highlighter for JSON
-      const parts = line.split(/(".*?"|true|false|\b\d+\b|[{}[\],:])/g);
+      const parts = line.split(/(".*?"|true|false|\b\d+\b|[{}[\],:])/g).filter(Boolean);
 
       return (
         <div key={`line-${i}`} className="table-row">
@@ -25,13 +25,13 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
             {parts.map((part, j) => {
               const partKey = `part-${i}-${j}`;
               if (part === '{' || part === '}' || part === '[' || part === ']' || part === ',' || part === ':') {
-                return <span key={partKey} className="text-zinc-500">{part}</span>;
+                return <span key={partKey} className="text-zinc-400 dark:text-zinc-500">{part}</span>;
               }
               if (part === 'true' || part === 'false') {
-                return <span key={partKey} className="text-zinc-200">{part}</span>;
+                return <span key={partKey} className="text-blue-500 dark:text-blue-400 font-semibold">{part}</span>;
               }
               if (/^\d+$/.test(part)) {
-                return <span key={partKey} className="text-rose-400">{part}</span>;
+                return <span key={partKey} className="text-orange-500 dark:text-orange-400 font-semibold">{part}</span>;
               }
               if (part.startsWith('"') && part.endsWith('"')) {
                 // Check if it's a key (followed by colon or spacing and colon)
@@ -42,11 +42,11 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
                    break;
                 }
                 if (isKey) {
-                  return <span key={partKey} className="text-[#8a95ff]">{part}</span>;
+                  return <span key={partKey} className="text-purple-600 dark:text-purple-400 font-semibold">{part}</span>;
                 }
-                return <span key={partKey} className="text-emerald-400">{part}</span>;
+                return <span key={partKey} className="text-green-600 dark:text-green-400">{part}</span>;
               }
-              return <span key={partKey} className="text-zinc-400 whitespace-pre">{part}</span>;
+              return <span key={partKey} className="text-zinc-700 dark:text-zinc-300 whitespace-pre">{part}</span>;
             })}
           </span>
         </div>
@@ -55,37 +55,37 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
   }, [configState]);
 
   return (
-    <section className="w-full h-full bg-zinc-950 flex flex-col font-mono" style={{ fontFamily: 'var(--font-mono, Geist Mono, monospace)' }}>
-      <div className="h-16 border-b border-zinc-800 flex items-center justify-between px-6 bg-zinc-950 shrink-0">
+    <section className="w-full h-full bg-zinc-50 dark:bg-zinc-950 flex flex-col font-mono" style={{ fontFamily: 'var(--font-mono, Geist Mono, monospace)' }}>
+      <div className="h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-6 bg-zinc-50 dark:bg-zinc-950 shrink-0">
         <div className="flex items-center gap-2 truncate pr-4">
           <Code2 className="w-4 h-4 text-[#8a95ff] shrink-0" />
-          <span className="text-[10px] font-bold text-white uppercase tracking-widest truncate">{activeFile}</span>
+          <span className="text-[10px] font-bold text-zinc-900 dark:text-white uppercase tracking-widest truncate">{activeFile}</span>
         </div>
         <div className="flex gap-4 shrink-0">
           <button
             type="button"
             onClick={() => navigator.clipboard.writeText(JSON.stringify(configState, null, 2))}
-            className="text-zinc-500 hover:text-white transition-colors"
+            className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
             title="Copy"
           >
             <Copy className="w-4 h-4" />
           </button>
-          <button type="button" className="text-zinc-500 hover:text-white transition-colors" title="Format">
+          <button type="button" className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors" title="Format">
             <AlignLeft className="w-4 h-4" />
           </button>
-          <button type="button" className="text-[#8a95ff] hover:text-white transition-colors" title="Download">
+          <button type="button" className="text-[#8a95ff] hover:text-[#7681ff] dark:hover:text-white transition-colors" title="Download">
             <Download className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 p-8 text-[13px] leading-relaxed overflow-y-auto bg-zinc-950">
+      <div className="flex-1 p-8 text-[13px] leading-relaxed overflow-y-auto bg-white dark:bg-zinc-950">
         <div className="table w-full">
           {highlightedCode}
         </div>
       </div>
 
-      <div className="p-4 bg-zinc-900 text-[9px] border-t border-zinc-800 shrink-0">
+      <div className="p-4 bg-zinc-100 dark:bg-zinc-900 text-[9px] border-t border-zinc-200 dark:border-zinc-800 shrink-0">
         <div className="flex items-center justify-between text-zinc-500 tracking-wider">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 text-[#8a95ff]">

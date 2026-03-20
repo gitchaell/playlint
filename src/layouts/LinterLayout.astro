@@ -12,12 +12,20 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<html lang={Astro.currentLocale} class="dark" transition:animate="fade">
+<html lang={Astro.currentLocale} transition:animate="fade">
   <head>
     <Head title={title} description={description} />
     <ClientRouter />
+    <script is:inline>
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
   </head>
-  <body class="bg-zinc-950 text-white selection:bg-zinc-800 h-screen overflow-hidden flex flex-col font-sans">
+  <body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white selection:bg-zinc-300 dark:selection:bg-zinc-800 h-screen overflow-hidden flex flex-col font-sans">
     <slot />
   </body>
 </html>
