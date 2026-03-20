@@ -31,7 +31,7 @@ function getPathForLang(lang: string) {
 		size="sm"
 		aria-label="Change language"
 	>
-		<span class="font-medium text-sm">{currentLang.toUpperCase()}</span>
+		<Icon name="globe" class="h-5 w-5" />
 		<Icon name="ChevronDown" class="h-4 w-4 opacity-60" />
 	</Button>
 
@@ -42,7 +42,7 @@ function getPathForLang(lang: string) {
 		<Menu class="w-32">
 			{
 				Object.entries(languages).map(([lang, label]) => (
-					<a href={getPathForLang(lang)} class="block">
+					<a href={getPathForLang(lang)} data-astro-reload class="block">
 						<MenuItem
 							checked={lang === currentLang}
 							role="menuitemradio"

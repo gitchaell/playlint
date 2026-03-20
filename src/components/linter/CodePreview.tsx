@@ -16,7 +16,7 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
 
     return jsonString.split('\n').map((line, i) => {
       // Basic syntax highlighter for JSON
-      const parts = line.split(/(".*?"|true|false|\d+|[{}[\],])/g);
+      const parts = line.split(/(".*?"|true|false|\b\d+\b|[{}[\],:])/g);
 
       return (
         <div key={`line-${i}`} className="table-row">
@@ -24,7 +24,7 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
           <span className="table-cell">
             {parts.map((part, j) => {
               const partKey = `part-${i}-${j}`;
-              if (part === '{' || part === '}' || part === '[' || part === ']' || part === ',') {
+              if (part === '{' || part === '}' || part === '[' || part === ']' || part === ',' || part === ':') {
                 return <span key={partKey} className="text-zinc-500">{part}</span>;
               }
               if (part === 'true' || part === 'false') {
@@ -34,13 +34,19 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
                 return <span key={partKey} className="text-rose-400">{part}</span>;
               }
               if (part.startsWith('"') && part.endsWith('"')) {
-                // Check if it's a key (followed by colon)
-                if (j < parts.length - 1 && parts[j + 1].includes(':')) {
+                // Check if it's a key (followed by colon or spacing and colon)
+                let isKey = false;
+                for (let k = j + 1; k < parts.length; k++) {
+                   if (parts[k].trim() === '') continue;
+                   if (parts[k] === ':') isKey = true;
+                   break;
+                }
+                if (isKey) {
                   return <span key={partKey} className="text-[#8a95ff]">{part}</span>;
                 }
                 return <span key={partKey} className="text-emerald-400">{part}</span>;
               }
-              return <span key={partKey} className="text-zinc-400">{part}</span>;
+              return <span key={partKey} className="text-zinc-400 whitespace-pre">{part}</span>;
             })}
           </span>
         </div>
@@ -49,7 +55,7 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
   }, [configState]);
 
   return (
-    <section className="w-full h-full bg-zinc-950 flex flex-col font-mono" style={{ fontFamily: '"Geist Mono", monospace' }}>
+    <section className="w-full h-full bg-zinc-950 flex flex-col font-mono" style={{ fontFamily: 'var(--font-mono, Geist Mono, monospace)' }}>
       <div className="h-16 border-b border-zinc-800 flex items-center justify-between px-6 bg-zinc-950 shrink-0">
         <div className="flex items-center gap-2 truncate pr-4">
           <Code2 className="w-4 h-4 text-[#8a95ff] shrink-0" />
