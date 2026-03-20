@@ -6,15 +6,16 @@ import { FormatterView } from './FormatterView';
 import { CodePreview } from './CodePreview';
 import { AddConfigModal } from './AddConfigModal';
 import { ENGINES, type ConfigEngine } from './rules';
+import { useLocalStorage } from './useLocalStorage';
 
 const PanelGroup = (ResizablePanels as any).PanelGroup || (ResizablePanels as any).Group;
 const PanelResizeHandle = (ResizablePanels as any).PanelResizeHandle || (ResizablePanels as any).Separator;
 const Panel = ResizablePanels.Panel;
 
 export function LinterConfigApp({ lang }: { lang: string }) {
-  const [activeEngine, setActiveEngine] = useState<ConfigEngine>('Biome');
+  const [activeEngine, setActiveEngine] = useLocalStorage<ConfigEngine>('playlint-active-engine', 'Biome');
   // Store the active version selection for each engine
-  const [activeVersions, setActiveVersions] = useState<Record<ConfigEngine, string>>({
+  const [activeVersions, setActiveVersions] = useLocalStorage<Record<ConfigEngine, string>>('playlint-active-versions', {
     Biome: ENGINES.Biome.versions[ENGINES.Biome.versions.length - 1].id,
     Prettier: ENGINES.Prettier.versions[ENGINES.Prettier.versions.length - 1].id,
     ESLint: ENGINES.ESLint.versions[ENGINES.ESLint.versions.length - 1].id,
@@ -25,7 +26,7 @@ export function LinterConfigApp({ lang }: { lang: string }) {
 
   // Create a deeply nested state structure to track configuration states
   // by Engine -> by Version.
-  const [states, setStates] = useState<Record<ConfigEngine, Record<string, any>>>(() => {
+  const [states, setStates] = useLocalStorage<Record<ConfigEngine, Record<string, any>>>('playlint-states', () => {
     const initialState: any = {};
     for (const [engineName, engineDef] of Object.entries(ENGINES)) {
       initialState[engineName] = {};
