@@ -27,14 +27,22 @@
 		"test:watch": "vitest"
 	},
 	"dependencies": {
+		"@astrojs/react": "^5.0.1",
 		"@astrojs/sitemap": "^3.2.1",
 		"@astrojs/ts-plugin": "^1.10.4",
 		"@lucide/astro": "^0.575.0",
+		"@svgr/plugin-jsx": "^8.1.0",
 		"@tailwindcss/vite": "^4.2.1",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
 		"@vercel/analytics": "^1.5.0",
 		"astro": "^5.2.5",
 		"astro-typesafe-routes": "^5.0.0",
 		"clsx": "^2.1.1",
+		"lucide-react": "^0.577.0",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
+		"react-resizable-panels": "^4.7.3",
 		"tailwind-merge": "^3.5.0",
 		"tailwind-variants": "^3.2.2",
 		"tailwindcss": "^4.2.1"

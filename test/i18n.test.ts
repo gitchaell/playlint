@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { useTranslations } from '@/i18n/utils';
+import { useTranslations } from '../src/i18n/utils';
 
 test('useTranslations returns correct string for default lang', () => {
 	const t = useTranslations('en');
@@ -12,8 +12,7 @@ test('useTranslations returns correct string for other lang', () => {
 });
 
 test('useTranslations falls back to default lang', () => {
-	// @ts-expect-error
-	const t = useTranslations('invalid');
+	const t = useTranslations('invalid' as any);
 	// Assuming we might have missing keys in future, but for now we check a known key.
 	// Let's assume 'unknown.key' doesn't exist, it returns undefined in current implementation.
 	// The implementation is: return ui[lang][key] || ui[defaultLang][key];

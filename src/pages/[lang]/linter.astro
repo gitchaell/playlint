@@ -1,0 +1,18 @@
+---
+import LinterLayout from '../../layouts/LinterLayout.astro';
+import { LinterConfigApp } from '../../components/linter/LinterConfigApp';
+
+export function getStaticPaths() {
+	return [
+		{ params: { lang: 'en' } },
+		{ params: { lang: 'es' } },
+		{ params: { lang: 'de' } },
+		{ params: { lang: 'ja' } },
+		{ params: { lang: 'ko' } }
+	];
+}
+---
+
+<LinterLayout title="PlayLint | Professional Linter Configuration" description="Configure your linter and formatter files easily for Biome, Prettier, ESLint, Oxlint and Stylelint. PlayLint is an intuitive, visual configurator.">
+  <LinterConfigApp client:load lang={Astro.currentLocale || 'en'} />
+</LinterLayout>
