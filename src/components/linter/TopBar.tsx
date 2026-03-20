@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Asterisk, Search, Moon, Sun, Globe, ChevronDown } from 'lucide-react';
+import { Search, Moon, Sun, Globe, ChevronDown } from 'lucide-react';
 import { useTranslations } from '../../i18n/utils';
 import { languages } from '../../i18n/ui';
 
@@ -51,19 +51,22 @@ export function TopBar() {
   return (
     <header className="bg-white dark:bg-zinc-950 flex justify-between items-center w-full px-6 h-16 border-b border-zinc-200 dark:border-zinc-800 z-50 text-sm tracking-tight sticky top-0 shrink-0">
       <div className="flex items-center gap-8">
-        <div className="flex items-center gap-2">
-          <Asterisk className="w-6 h-6 text-zinc-900 dark:text-white" />
+        <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <img src="/favicon.svg" alt="Logo" className="w-6 h-6" />
           <span className="text-xl font-bold tracking-tighter text-zinc-900 dark:text-white font-title">PlayLint</span>
-        </div>
+        </a>
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="relative w-64 mr-4 hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 w-4 h-4" />
+        <div className="relative w-64 mr-4 hidden md:block group">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 w-4 h-4 transition-colors group-focus-within:text-zinc-900 dark:group-focus-within:text-white" />
           <input
-            className="w-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 focus:ring-1 focus:ring-zinc-900 dark:focus:ring-white outline-none rounded-md pl-10 pr-4 py-1.5 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-600 font-sans"
+            className="w-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 focus:ring-1 focus:ring-zinc-900 dark:focus:ring-white outline-none rounded-md pl-10 pr-4 py-1.5 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-600 font-sans transition-all"
             placeholder={t('linter.search')}
             type="text"
+            onChange={(e) => {
+              console.log('Searching for:', e.target.value);
+            }}
           />
         </div>
 

@@ -76,7 +76,7 @@ export function LinterConfigApp({ lang }: { lang: string }) {
           <Panel
             defaultSize={20}
             minSize={15}
-            maxSize={30}
+            maxSize={50}
             collapsible={true}
             className="h-full hidden md:block min-w-0"
           >
