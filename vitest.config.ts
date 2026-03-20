@@ -1,8 +1,7 @@
-/// <reference types="vitest" />
-import { getViteConfig } from 'astro/config';
+import { defineConfig } from 'vitest/config';
 
-export default getViteConfig({
-	test: {
-		dir: './test',
-	},
+export default defineConfig({
+  test: {
+    include: ['**/*.{test,spec}.?(c|m)[jt]s?(x)'],
+  },
 });
