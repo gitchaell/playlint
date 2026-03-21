@@ -1,7 +1,7 @@
-import { ArrowRight, ChevronDown, Info } from 'lucide-react';
+import { DiffEditor } from '@monaco-editor/react';
+import { ChevronDown, Info } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import { codeToHtml } from 'shiki';
 import { type LangCode, useTranslations } from '../../i18n/utils';
 import { type ConfigEngine, ENGINES } from './rules';
 
@@ -66,7 +66,7 @@ export function FormatterView({
 								rule.previewAfterMap &&
 								String(currentValue) in rule.previewAfterMap;
 							const currentPreview = hasPreview
-								? rule.previewAfterMap![String(currentValue)]
+								? rule.previewAfterMap?.[String(currentValue)]
 								: null;
 
 							return (
@@ -83,6 +83,7 @@ export function FormatterView({
 											<div className='flex flex-wrap bg-zinc-100 dark:bg-zinc-900 p-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 w-fit mb-6'>
 												{rule.options.map((option) => (
 													<button
+														type='button'
 														key={String(option.value)}
 														onClick={() => onSettingChange(path, option.value)}
 														className={`px-6 sm:px-8 py-2 text-xs font-bold rounded-lg transition-all ${
@@ -111,7 +112,11 @@ export function FormatterView({
 
 										{/* Code Preview */}
 										{hasPreview && (
-											<ShikiPreview before={rule.previewBefore || ''} after={currentPreview || ''} engine={activeEngine} />
+											<MonacoDiffPreview
+												before={rule.previewBefore || ''}
+												after={currentPreview || ''}
+												engine={activeEngine}
+											/>
 										)}
 									</div>
 								</RuleCard>
@@ -131,12 +136,14 @@ export function FormatterView({
 				</div>
 				<div className='flex gap-4'>
 					<button
+						type='button'
 						onClick={onResetDefaults}
 						className='px-6 py-2.5 text-xs font-bold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors'
 					>
 						{t('linter.resetDefaults')}
 					</button>
 					<button
+						type='button'
 						onClick={() => alert('Changes applied successfully!')}
 						className='px-8 py-2.5 text-xs font-bold text-white bg-zinc-900 dark:text-black dark:bg-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-95 transition-all'
 					>
@@ -148,69 +155,53 @@ export function FormatterView({
 	);
 }
 
-function ShikiPreview({ before, after, engine }: { before: string; after: string; engine: string }) {
-	const [htmlBefore, setHtmlBefore] = useState<string>('');
-	const [htmlAfter, setHtmlAfter] = useState<string>('');
+function MonacoDiffPreview({
+	before,
+	after,
+	engine,
+}: {
+	before: string;
+	after: string;
+	engine: string;
+}) {
+	const lang = engine.toLowerCase() === 'stylelint' ? 'css' : 'javascript';
+	// We determine theme based on dark mode class on document element
+	const [isDark, setIsDark] = useState(false);
 
 	useEffect(() => {
-		const renderCode = async () => {
-			const lang = engine.toLowerCase() === 'stylelint' ? 'css' : 'javascript';
-			const processText = (text: string) => text.replace(/ /g, '·').replace(/\t/g, '→\t');
+		const isDarkMode = document.documentElement.classList.contains('dark');
+		setIsDark(isDarkMode);
 
-			try {
-				const beforeStr = processText(before);
-				const hBefore = await codeToHtml(beforeStr, {
-					lang,
-					themes: {
-						light: 'github-light',
-						dark: 'github-dark',
-					},
-				});
-				setHtmlBefore(hBefore);
-
-				const afterStr = processText(after);
-				const hAfter = await codeToHtml(afterStr, {
-					lang,
-					themes: {
-						light: 'github-light',
-						dark: 'github-dark',
-					},
-				});
-				setHtmlAfter(hAfter);
-			} catch (e) {
-				console.error(e);
-				setHtmlBefore(`<pre><code>${processText(before)}</code></pre>`);
-				setHtmlAfter(`<pre><code>${processText(after)}</code></pre>`);
+		const observer = new MutationObserver((mutations) => {
+			for (const mutation of mutations) {
+				if (mutation.attributeName === 'class') {
+					setIsDark(document.documentElement.classList.contains('dark'));
+				}
 			}
-		};
-		renderCode();
-	}, [before, after, engine]);
+		});
+
+		observer.observe(document.documentElement, { attributes: true });
+		return () => observer.disconnect();
+	}, []);
 
 	return (
-		<div className='bg-zinc-100 dark:bg-zinc-900/80 rounded-xl border border-zinc-200 dark:border-zinc-800/80 mt-2 relative overflow-hidden flex flex-col sm:flex-row'>
-			{/* Before */}
-			<div className='flex-1 border-b sm:border-b-0 sm:border-r border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/50'>
-				<div className='px-4 py-2 bg-zinc-200/50 dark:bg-zinc-800/50 border-b border-zinc-200/50 dark:border-zinc-800/80 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2'>
-					<span className='w-1.5 h-1.5 rounded-full bg-zinc-400'></span>{' '}
-					Before
-				</div>
-				<div
-					className='p-4 text-xs whitespace-pre-wrap font-mono leading-relaxed [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0 opacity-80'
-					dangerouslySetInnerHTML={{ __html: htmlBefore }}
-				/>
-			</div>
-
-			{/* After */}
-			<div className='flex-1 bg-zinc-50 dark:bg-zinc-900/30'>
-				<div className='px-4 py-2 bg-zinc-100/50 dark:bg-zinc-800/30 border-b border-zinc-200/50 dark:border-zinc-800/50 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2'>
-					<span className='w-1.5 h-1.5 rounded-full bg-[#8a95ff]'></span>{' '}
-					After
-				</div>
-				<div
-					className='p-4 text-xs whitespace-pre-wrap font-mono leading-relaxed [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0'
-					dangerouslySetInnerHTML={{ __html: htmlAfter }}
-				/>
-			</div>
+		<div className='h-[200px] border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden mt-2'>
+			<DiffEditor
+				original={before}
+				modified={after}
+				language={lang}
+				theme={isDark ? 'vs-dark' : 'light'}
+				options={{
+					readOnly: true,
+					renderSideBySide: false, // User requested one single fragment where change is seen
+					minimap: { enabled: false },
+					scrollBeyondLastLine: false,
+					renderWhitespace: 'all',
+					fontFamily: 'var(--font-mono, "Geist Mono", monospace)',
+					fontSize: 12,
+					lineHeight: 20,
+				}}
+			/>
 		</div>
 	);
 }
