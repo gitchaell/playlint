@@ -1,3 +1,4 @@
+import { Editor } from '@monaco-editor/react';
 import {
 	AlignLeft,
 	CheckCircle2,
@@ -6,7 +7,7 @@ import {
 	Copy,
 	Download,
 } from 'lucide-react';
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from '../../i18n/utils';
 
 interface CodePreviewProps {
@@ -39,105 +40,29 @@ export function CodePreview({
 		URL.revokeObjectURL(url);
 	};
 
-	// Syntax highlighting logic for JSON
-	const highlightedCode = useMemo(() => {
-		const jsonString = JSON.stringify(configState, null, 2);
+	const [isDark, setIsDark] = useState(true);
 
-		return jsonString.split('\n').map((line, i) => {
-			// Basic syntax highlighter for JSON
-			const parts = line
-				.split(/(".*?"|true|false|\b\d+\b|[{}[\],:])/g)
-				.filter(Boolean);
+	useEffect(() => {
+		const isDarkMode = document.documentElement.classList.contains('dark');
+		setIsDark(isDarkMode);
 
-			return (
-				<div key={`line-${i}`} className='table-row'>
-					<span className='table-cell text-right pr-4 select-none opacity-30 w-8'>
-						{i + 1}
-					</span>
-					<span className='table-cell'>
-						{parts.map((part, j) => {
-							const partKey = `part-${i}-${j}`;
-							if (
-								part === '{' ||
-								part === '}' ||
-								part === '[' ||
-								part === ']' ||
-								part === ',' ||
-								part === ':'
-							) {
-								return (
-									<span
-										key={partKey}
-										className='text-zinc-400 dark:text-zinc-500'
-									>
-										{part}
-									</span>
-								);
-							}
-							if (part === 'true' || part === 'false') {
-								return (
-									<span
-										key={partKey}
-										className='text-blue-500 dark:text-blue-400 font-semibold'
-									>
-										{part}
-									</span>
-								);
-							}
-							if (/^\d+$/.test(part)) {
-								return (
-									<span
-										key={partKey}
-										className='text-orange-500 dark:text-orange-400 font-semibold'
-									>
-										{part}
-									</span>
-								);
-							}
-							if (part.startsWith('"') && part.endsWith('"')) {
-								// Check if it's a key (followed by colon or spacing and colon)
-								let isKey = false;
-								for (let k = j + 1; k < parts.length; k++) {
-									if (parts[k].trim() === '') continue;
-									if (parts[k] === ':') isKey = true;
-									break;
-								}
-								if (isKey) {
-									return (
-										<span
-											key={partKey}
-											className='text-purple-600 dark:text-purple-400 font-semibold'
-										>
-											{part}
-										</span>
-									);
-								}
-								return (
-									<span
-										key={partKey}
-										className='text-green-600 dark:text-green-400'
-									>
-										{part}
-									</span>
-								);
-							}
-							return (
-								<span
-									key={partKey}
-									className='text-zinc-700 dark:text-zinc-300 whitespace-pre'
-								>
-									{part}
-								</span>
-							);
-						})}
-					</span>
-				</div>
-			);
+		const observer = new MutationObserver((mutations) => {
+			for (const mutation of mutations) {
+				if (mutation.attributeName === 'class') {
+					setIsDark(document.documentElement.classList.contains('dark'));
+				}
+			}
 		});
-	}, [configState]);
+
+		observer.observe(document.documentElement, { attributes: true });
+		return () => observer.disconnect();
+	}, []);
 
 	return (
-		<section className='w-full h-full bg-[#1e1e1e] flex flex-col font-mono text-[#d4d4d4]' style={{ fontFamily: 'var(--font-mono)' }}>
+		<section
+			className='w-full h-full bg-[#1e1e1e] flex flex-col font-mono text-[#d4d4d4]'
+			style={{ fontFamily: 'var(--font-mono)' }}
+		>
 			<div className='h-14 border-b border-[#2d2d2d] flex items-center justify-between px-6 bg-[#1e1e1e] shrink-0'>
 				<div className='flex items-center gap-2 truncate pr-4 opacity-80'>
 					<Code2 className='w-4 h-4 text-[#8a95ff] shrink-0' />
@@ -178,7 +103,21 @@ export function CodePreview({
 			</div>
 
 			<div className='flex-1 py-6 text-[13px] leading-relaxed overflow-y-auto bg-[#1e1e1e]'>
-				<div className='table w-full'>{highlightedCode}</div>
+				<Editor
+					height='100%'
+					language='json'
+					theme='vs-dark'
+					value={JSON.stringify(configState, null, 2)}
+					options={{
+						readOnly: true,
+						minimap: { enabled: false },
+						scrollBeyondLastLine: false,
+						fontFamily: 'var(--font-mono, "Geist Mono", monospace)',
+						fontSize: 13,
+						lineHeight: 22,
+						padding: { top: 16, bottom: 16 },
+					}}
+				/>
 			</div>
 
 			<div className='px-4 py-1.5 bg-[#007acc] text-white text-[11px] shrink-0 flex items-center justify-between tracking-wide'>

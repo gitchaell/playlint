@@ -95,7 +95,9 @@ export function LinterConfigApp({ lang }: { lang: string }) {
 	const currentState = states[activeEngine][currentVersionId];
 
 	// Mobile tab state
-	const [activeMobileTab, setActiveMobileTab] = useState<'sidebar' | 'editor' | 'preview'>('editor');
+	const [activeMobileTab, setActiveMobileTab] = useState<
+		'sidebar' | 'editor' | 'preview'
+	>('editor');
 
 	return (
 		<div className='bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white selection:bg-zinc-300 dark:selection:bg-zinc-800 h-screen overflow-hidden flex flex-col font-sans'>
