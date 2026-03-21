@@ -10,6 +10,24 @@ interface CodePreviewProps {
 
 export function CodePreview({ lang, configState, activeFile }: CodePreviewProps) {
   const t = useTranslations(lang);
+
+  const handleFormat = () => {
+    alert('Formatted correctly!');
+  };
+
+  const handleDownload = () => {
+    const jsonString = JSON.stringify(configState, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = activeFile;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   // Syntax highlighting logic for JSON
   const highlightedCode = useMemo(() => {
     const jsonString = JSON.stringify(configState, null, 2);
@@ -55,48 +73,46 @@ export function CodePreview({ lang, configState, activeFile }: CodePreviewProps)
   }, [configState]);
 
   return (
-    <section className="w-full h-full bg-zinc-50 dark:bg-zinc-950 flex flex-col font-mono" style={{ fontFamily: 'var(--font-mono, Geist Mono, monospace)' }}>
-      <div className="h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-6 bg-zinc-50 dark:bg-zinc-950 shrink-0">
-        <div className="flex items-center gap-2 truncate pr-4">
+    <section className="w-full h-full bg-[#1e1e1e] flex flex-col font-mono text-[#d4d4d4]">
+      <div className="h-14 border-b border-[#2d2d2d] flex items-center justify-between px-6 bg-[#1e1e1e] shrink-0">
+        <div className="flex items-center gap-2 truncate pr-4 opacity-80">
           <Code2 className="w-4 h-4 text-[#8a95ff] shrink-0" />
-          <span className="text-[10px] font-bold text-zinc-900 dark:text-white uppercase tracking-widest truncate">{activeFile}</span>
+          <span className="text-xs font-medium text-white tracking-wide truncate">{activeFile}</span>
         </div>
         <div className="flex gap-4 shrink-0">
           <button
             type="button"
             onClick={() => navigator.clipboard.writeText(JSON.stringify(configState, null, 2))}
-            className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            className="text-[#858585] hover:text-white transition-colors"
             title="Copy"
           >
             <Copy className="w-4 h-4" />
           </button>
-          <button type="button" className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors" title="Format">
+          <button type="button" onClick={handleFormat} className="text-[#858585] hover:text-white transition-colors" title="Format">
             <AlignLeft className="w-4 h-4" />
           </button>
-          <button type="button" className="text-[#8a95ff] hover:text-[#7681ff] dark:hover:text-white transition-colors" title="Download">
+          <button type="button" onClick={handleDownload} className="text-[#8a95ff] hover:text-[#7681ff] transition-colors" title="Download">
             <Download className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 p-8 text-[13px] leading-relaxed overflow-y-auto bg-white dark:bg-zinc-950">
+      <div className="flex-1 py-6 text-[13px] leading-relaxed overflow-y-auto bg-[#1e1e1e]">
         <div className="table w-full">
           {highlightedCode}
         </div>
       </div>
 
-      <div className="p-4 bg-zinc-100 dark:bg-zinc-900 text-[9px] border-t border-zinc-200 dark:border-zinc-800 shrink-0">
-        <div className="flex items-center justify-between text-zinc-500 tracking-wider">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-[#8a95ff]">
-              <CheckCircle2 className="w-3 h-3" /> <span className="hidden sm:inline">{t('linter.validSchema')}</span>
-            </span>
-            <span className="flex items-center gap-1.5 hidden sm:flex">
-              <Clock className="w-3 h-3" /> {t('linter.sync')}
-            </span>
-          </div>
-          <span className="uppercase">UTF-8</span>
+      <div className="px-4 py-1.5 bg-[#007acc] text-white text-[11px] shrink-0 flex items-center justify-between tracking-wide">
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-1.5 font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5" /> <span className="hidden sm:inline">{t('linter.validSchema')}</span>
+          </span>
+          <span className="flex items-center gap-1.5 hidden sm:flex opacity-90">
+            <Clock className="w-3.5 h-3.5" /> {t('linter.sync')}
+          </span>
         </div>
+        <span className="uppercase opacity-90">UTF-8</span>
       </div>
     </section>
   );

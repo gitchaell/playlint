@@ -196,6 +196,83 @@ export const BiomeConfig: EngineConfig = {
         'true': `<button\n  className="btn">\n  Click\n</button>`,
         'false': `<button\n  className="btn"\n>\n  Click\n</button>`
       }
+    },
+    {
+      id: 'formatter.formatWithErrors',
+      titleKey: 'Format With Errors',
+      descriptionKey: 'Allows to format a document that has syntax errors.',
+      type: 'boolean',
+      options: [
+        { label: 'True', value: true },
+        { label: 'False', value: false }
+      ],
+      previewBefore: `function foo() {\n  console.log("hello"\n}`,
+      previewAfterMap: {
+        'true': `function foo() {\n  console.log("hello");\n}`,
+        'false': `function foo() {\n  console.log("hello"\n}`
+      }
+    },
+    {
+      id: 'formatter.lineEnding',
+      titleKey: 'Line Ending',
+      descriptionKey: 'The type of line ending.',
+      type: 'select',
+      options: [
+        { label: 'LF', value: 'lf' },
+        { label: 'CRLF', value: 'crlf' },
+        { label: 'CR', value: 'cr' }
+      ],
+      previewBefore: `line1\\nline2`,
+      previewAfterMap: {
+        'lf': `line1\\nline2`,
+        'crlf': `line1\\r\\nline2`,
+        'cr': `line1\\rline2`
+      }
+    },
+    {
+      id: 'linter.rules.recommended',
+      titleKey: 'Recommended Rules',
+      descriptionKey: 'Enables the recommended rules for all groups.',
+      type: 'boolean',
+      options: [
+        { label: 'True', value: true },
+        { label: 'False', value: false }
+      ],
+      previewBefore: `if (a == b) {}`,
+      previewAfterMap: {
+        'true': `if (a === b) {}`,
+        'false': `if (a == b) {}`
+      }
+    },
+    {
+      id: 'json.formatter.indentStyle',
+      titleKey: 'JSON Indent Style',
+      descriptionKey: 'The style of the indentation for JSON files.',
+      type: 'select',
+      options: [
+        { label: 'Tab', value: 'tab' },
+        { label: 'Space', value: 'space' }
+      ],
+      previewBefore: `{\n    "foo": "bar"\n}`,
+      previewAfterMap: {
+        'tab': `{\n\t"foo": "bar"\n}`,
+        'space': `{\n  "foo": "bar"\n}`
+      }
+    },
+    {
+      id: 'css.formatter.indentStyle',
+      titleKey: 'CSS Indent Style',
+      descriptionKey: 'The style of the indentation for CSS files.',
+      type: 'select',
+      options: [
+        { label: 'Tab', value: 'tab' },
+        { label: 'Space', value: 'space' }
+      ],
+      previewBefore: `.box {\n    color: red;\n}`,
+      previewAfterMap: {
+        'tab': `.box {\n\tcolor: red;\n}`,
+        'space': `.box {\n  color: red;\n}`
+      }
     }
   ]
 };

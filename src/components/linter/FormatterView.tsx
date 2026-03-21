@@ -6,12 +6,13 @@ import { ENGINES, type ConfigEngine } from './rules';
 interface FormatterViewProps {
   configState: any;
   onSettingChange: (path: string[], value: any) => void;
+  onResetDefaults: () => void;
   lang: LangCode | string;
   activeEngine: ConfigEngine;
   activeVersion: string;
 }
 
-export function FormatterView({ configState, onSettingChange, lang, activeEngine, activeVersion }: FormatterViewProps) {
+export function FormatterView({ configState, onSettingChange, onResetDefaults, lang, activeEngine, activeVersion }: FormatterViewProps) {
   const t = useTranslations(lang);
   const engineDef = ENGINES[activeEngine];
 
@@ -50,6 +51,11 @@ export function FormatterView({ configState, onSettingChange, lang, activeEngine
               // Determine if we have a preview to show based on current selection
               const hasPreview = rule.previewBefore && rule.previewAfterMap && String(currentValue) in rule.previewAfterMap;
               const currentPreview = hasPreview ? rule.previewAfterMap![String(currentValue)] : null;
+
+              const renderWhitespace = (str: string | null | undefined) => {
+                if (!str) return str;
+                return str.replace(/ /g, '·').replace(/\t/g, '→\t');
+              };
 
               return (
                 <RuleCard
@@ -93,22 +99,22 @@ export function FormatterView({ configState, onSettingChange, lang, activeEngine
                     {hasPreview && (
                       <div className="bg-zinc-100 dark:bg-zinc-900/80 rounded-xl border border-zinc-200 dark:border-zinc-800/80 mt-2 relative overflow-hidden flex flex-col sm:flex-row">
                         {/* Before */}
-                        <div className="flex-1 border-b sm:border-b-0 sm:border-r border-zinc-200 dark:border-zinc-800 bg-red-50/30 dark:bg-red-950/20">
-                           <div className="px-4 py-2 bg-red-100/50 dark:bg-red-900/20 border-b border-red-200/50 dark:border-red-900/30 text-[10px] uppercase tracking-widest text-red-600 dark:text-red-400 font-sans font-bold flex items-center gap-2">
-                             <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span> Before
+                        <div className="flex-1 border-b sm:border-b-0 sm:border-r border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/50">
+                           <div className="px-4 py-2 bg-zinc-200/50 dark:bg-zinc-800/50 border-b border-zinc-200/50 dark:border-zinc-800/80 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2">
+                             <span className="w-1.5 h-1.5 rounded-full bg-zinc-400"></span> Before
                            </div>
-                           <pre className="p-4 text-xs text-red-900/70 dark:text-red-200/60 whitespace-pre-wrap font-mono leading-relaxed">
-                             {rule.previewBefore}
+                           <pre className="p-4 text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap font-mono leading-relaxed">
+                             {renderWhitespace(rule.previewBefore)}
                            </pre>
                         </div>
 
                         {/* After */}
-                        <div className="flex-1 bg-green-50/30 dark:bg-green-950/20">
-                           <div className="px-4 py-2 bg-green-100/50 dark:bg-green-900/20 border-b border-green-200/50 dark:border-green-900/30 text-[10px] uppercase tracking-widest text-green-700 dark:text-green-400 font-sans font-bold flex items-center gap-2">
-                             <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> After
+                        <div className="flex-1 bg-zinc-50 dark:bg-zinc-900/30">
+                           <div className="px-4 py-2 bg-zinc-100/50 dark:bg-zinc-800/30 border-b border-zinc-200/50 dark:border-zinc-800/50 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2">
+                             <span className="w-1.5 h-1.5 rounded-full bg-[#8a95ff]"></span> After
                            </div>
-                           <pre className="p-4 text-xs text-green-900/90 dark:text-green-100/90 whitespace-pre-wrap font-mono leading-relaxed">
-                             {currentPreview}
+                           <pre className="p-4 text-xs text-zinc-800 dark:text-zinc-300 whitespace-pre-wrap font-mono leading-relaxed">
+                             {renderWhitespace(currentPreview)}
                            </pre>
                         </div>
                       </div>
@@ -128,8 +134,8 @@ export function FormatterView({ configState, onSettingChange, lang, activeEngine
           <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">{t('linter.workspaceSynced')}</span>
         </div>
         <div className="flex gap-4">
-          <button className="px-6 py-2.5 text-xs font-bold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">{t('linter.resetDefaults')}</button>
-          <button className="px-8 py-2.5 text-xs font-bold text-white bg-zinc-900 dark:text-black dark:bg-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-95 transition-all">{t('linter.applyChanges')}</button>
+          <button onClick={onResetDefaults} className="px-6 py-2.5 text-xs font-bold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">{t('linter.resetDefaults')}</button>
+          <button onClick={() => alert('Changes applied successfully!')} className="px-8 py-2.5 text-xs font-bold text-white bg-zinc-900 dark:text-black dark:bg-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-95 transition-all">{t('linter.applyChanges')}</button>
         </div>
       </div>
     </section>

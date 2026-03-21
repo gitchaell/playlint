@@ -23,9 +23,10 @@ const { lang } = Astro.params;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Loading...</title>
-		<meta http-equiv="refresh" content={`0;url=/${lang}/linter`} />
 		<script is:inline define:vars={{ lang }}>
-			window.location.href = `/${lang}/linter`;
+			setTimeout(() => {
+				window.location.href = `/${lang}/linter`;
+			}, 2000);
 		</script>
 	</head>
 	<body

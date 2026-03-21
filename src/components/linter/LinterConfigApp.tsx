@@ -57,6 +57,18 @@ export function LinterConfigApp({ lang }: { lang: string }) {
     });
   };
 
+  const handleResetDefaults = () => {
+    const vId = activeVersions[activeEngine];
+    const defaultState = ENGINES[activeEngine].versions.find(v => v.id === vId)?.defaultState || {};
+    setStates(prev => ({
+      ...prev,
+      [activeEngine]: {
+        ...prev[activeEngine],
+        [vId]: defaultState
+      }
+    }));
+  };
+
   const handleEngineChange = (engine: ConfigEngine) => {
     setActiveEngine(engine);
   };
@@ -76,7 +88,6 @@ export function LinterConfigApp({ lang }: { lang: string }) {
           <Panel
             defaultSize={20}
             minSize={15}
-            maxSize={30}
             collapsible={true}
             className="h-full hidden md:block min-w-0"
           >
@@ -99,6 +110,7 @@ export function LinterConfigApp({ lang }: { lang: string }) {
               activeVersion={currentVersionId}
               configState={currentState}
               onSettingChange={handleSettingChange}
+              onResetDefaults={handleResetDefaults}
             />
           </Panel>
 
