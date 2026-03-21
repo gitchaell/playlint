@@ -90,9 +90,13 @@
 	h6 {
 		font-family: var(--font-title);
 	}
-    p, span, div, li, a {
-        font-family: var(--font-paragraph);
-    }
+	p,
+	span,
+	div,
+	li,
+	a {
+		font-family: var(--font-paragraph);
+	}
 }
 
 @theme {

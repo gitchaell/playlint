@@ -1,278 +1,341 @@
-import type { EngineConfig } from './types';
 import { BiomeIcon } from '../icons/BiomeIcon';
+import type { EngineConfig } from './types';
 
 export const BiomeConfig: EngineConfig = {
-  name: 'Biome',
-  icon: BiomeIcon,
-  defaultFileName: 'biome.json',
-  versions: [
-    {
-      id: '1.x',
-      label: 'v1.x',
-      defaultState: {
-        formatter: { enabled: true, indentStyle: 'tab', indentWidth: 2, lineWidth: 80 },
-        javascript: { formatter: { quoteStyle: 'double', trailingComma: 'all', semicolons: 'always' } },
-        linter: { enabled: true, rules: { recommended: true } }
-      }
-    },
-    {
-      id: '2.x',
-      label: 'v2.x (Latest)',
-      defaultState: {
-        formatter: { enabled: true, indentStyle: 'tab', indentWidth: 2, lineWidth: 80, attributePosition: 'auto' },
-        javascript: { formatter: { quoteStyle: 'double', jsxQuoteStyle: 'double', quoteProperties: 'asNeeded', trailingCommas: 'all', semicolons: 'always', arrowParentheses: 'always', bracketSpacing: true, bracketSameLine: false } },
-        linter: { enabled: true, rules: { recommended: true } }
-      }
-    }
-  ],
-  rules: [
-    {
-      id: 'formatter.indentStyle',
-      titleKey: 'Indent Style',
-      descriptionKey: 'The indent style.',
-      type: 'select',
-      options: [
-        { label: 'Tab', value: 'tab' },
-        { label: 'Space', value: 'space' }
-      ],
-      previewBefore: `function init() {\n    console.log('hi');\n}`,
-      previewAfterMap: {
-        'tab': `function init() {\n\tconsole.log('hi');\n}`,
-        'space': `function init() {\n  console.log('hi');\n}`
-      }
-    },
-    {
-      id: 'formatter.indentWidth',
-      titleKey: 'Indent Width',
-      descriptionKey: 'The size of the indentation.',
-      type: 'number'
-    },
-    {
-      id: 'formatter.lineWidth',
-      titleKey: 'Line Width',
-      descriptionKey: 'What\'s the max width of a line.',
-      type: 'number'
-    },
-    {
-      id: 'formatter.attributePosition',
-      titleKey: 'Attribute Position',
-      descriptionKey: 'The attribute position style.',
-      type: 'select',
-      supportedVersions: ['2.x'],
-      options: [
-        { label: 'Auto', value: 'auto' },
-        { label: 'Multiline', value: 'multiline' }
-      ],
-      previewBefore: `<div class="a" id="b" />`,
-      previewAfterMap: {
-        'auto': `<div class="a" id="b" />`,
-        'multiline': `<div\n  class="a"\n  id="b"\n/>`
-      }
-    },
-    {
-      id: 'javascript.formatter.quoteStyle',
-      titleKey: 'Quote Style',
-      descriptionKey: 'The type of quotes used in JavaScript code.',
-      type: 'select',
-      options: [
-        { label: 'Double', value: 'double' },
-        { label: 'Single', value: 'single' }
-      ],
-      previewBefore: `const msg = "hello world";`,
-      previewAfterMap: {
-        'single': `const msg = 'hello world';`,
-        'double': `const msg = "hello world";`
-      }
-    },
-    {
-      id: 'javascript.formatter.jsxQuoteStyle',
-      titleKey: 'JSX Quote Style',
-      descriptionKey: 'The type of quotes used in JSX.',
-      type: 'select',
-      supportedVersions: ['2.x'],
-      options: [
-        { label: 'Double', value: 'double' },
-        { label: 'Single', value: 'single' }
-      ],
-      previewBefore: `<div className="test" />`,
-      previewAfterMap: {
-        'single': `<div className='test' />`,
-        'double': `<div className="test" />`
-      }
-    },
-    {
-      id: 'javascript.formatter.quoteProperties',
-      titleKey: 'Quote Properties',
-      descriptionKey: 'When properties in objects are quoted.',
-      type: 'select',
-      supportedVersions: ['2.x'],
-      options: [
-        { label: 'As Needed', value: 'asNeeded' },
-        { label: 'Preserve', value: 'preserve' }
-      ],
-      previewBefore: `const obj = { "a": 1, b: 2 };`,
-      previewAfterMap: {
-        'asNeeded': `const obj = { a: 1, b: 2 };`,
-        'preserve': `const obj = { "a": 1, b: 2 };`
-      }
-    },
-    {
-      id: 'javascript.formatter.trailingCommas',
-      titleKey: 'Trailing Commas',
-      descriptionKey: 'Print trailing commas wherever possible.',
-      type: 'select',
-      supportedVersions: ['2.x'],
-      options: [
-        { label: 'All', value: 'all' },
-        { label: 'ES5', value: 'es5' },
-        { label: 'None', value: 'none' }
-      ],
-      previewBefore: `const obj = {\n  a: 1,\n  b: 2\n};`,
-      previewAfterMap: {
-        'all': `const obj = {\n  a: 1,\n  b: 2,\n};`,
-        'es5': `const obj = {\n  a: 1,\n  b: 2,\n};`,
-        'none': `const obj = {\n  a: 1,\n  b: 2\n};`
-      }
-    },
-    {
-      id: 'javascript.formatter.semicolons',
-      titleKey: 'Semicolons',
-      descriptionKey: 'Whether the formatter prints semicolons.',
-      type: 'select',
-      options: [
-        { label: 'Always', value: 'always' },
-        { label: 'As Needed', value: 'asNeeded' }
-      ],
-      previewBefore: `const a = 1\nconst b = 2`,
-      previewAfterMap: {
-        'always': `const a = 1;\nconst b = 2;`,
-        'asNeeded': `const a = 1\nconst b = 2`
-      }
-    },
-    {
-      id: 'javascript.formatter.arrowParentheses',
-      titleKey: 'Arrow Parentheses',
-      descriptionKey: 'Whether to add non-necessary parentheses to arrow functions.',
-      type: 'select',
-      supportedVersions: ['2.x'],
-      options: [
-        { label: 'Always', value: 'always' },
-        { label: 'As Needed', value: 'asNeeded' }
-      ],
-      previewBefore: `const foo = x => x;`,
-      previewAfterMap: {
-        'always': `const foo = (x) => x;`,
-        'asNeeded': `const foo = x => x;`
-      }
-    },
-    {
-      id: 'javascript.formatter.bracketSpacing',
-      titleKey: 'Bracket Spacing',
-      descriptionKey: 'Whether to insert spaces around brackets in object literals.',
-      type: 'boolean',
-      supportedVersions: ['2.x'],
-      options: [
-        { label: 'True', value: true },
-        { label: 'False', value: false }
-      ],
-      previewBefore: `const obj = {foo: bar};`,
-      previewAfterMap: {
-        'true': `const obj = { foo: bar };`,
-        'false': `const obj = {foo: bar};`
-      }
-    },
-    {
-      id: 'javascript.formatter.bracketSameLine',
-      titleKey: 'Bracket Same Line',
-      descriptionKey: 'Whether to hug the closing bracket of multiline HTML/JSX tags to the end of the last line.',
-      type: 'boolean',
-      supportedVersions: ['2.x'],
-      options: [
-        { label: 'True', value: true },
-        { label: 'False', value: false }
-      ],
-      previewBefore: `<button\n  className="btn"\n>\n  Click\n</button>`,
-      previewAfterMap: {
-        'true': `<button\n  className="btn">\n  Click\n</button>`,
-        'false': `<button\n  className="btn"\n>\n  Click\n</button>`
-      }
-    },
-    {
-      id: 'formatter.formatWithErrors',
-      titleKey: 'Format With Errors',
-      descriptionKey: 'Allows to format a document that has syntax errors.',
-      type: 'boolean',
-      options: [
-        { label: 'True', value: true },
-        { label: 'False', value: false }
-      ],
-      previewBefore: `function foo() {\n  console.log("hello"\n}`,
-      previewAfterMap: {
-        'true': `function foo() {\n  console.log("hello");\n}`,
-        'false': `function foo() {\n  console.log("hello"\n}`
-      }
-    },
-    {
-      id: 'formatter.lineEnding',
-      titleKey: 'Line Ending',
-      descriptionKey: 'The type of line ending.',
-      type: 'select',
-      options: [
-        { label: 'LF', value: 'lf' },
-        { label: 'CRLF', value: 'crlf' },
-        { label: 'CR', value: 'cr' }
-      ],
-      previewBefore: `line1\\nline2`,
-      previewAfterMap: {
-        'lf': `line1\\nline2`,
-        'crlf': `line1\\r\\nline2`,
-        'cr': `line1\\rline2`
-      }
-    },
-    {
-      id: 'linter.rules.recommended',
-      titleKey: 'Recommended Rules',
-      descriptionKey: 'Enables the recommended rules for all groups.',
-      type: 'boolean',
-      options: [
-        { label: 'True', value: true },
-        { label: 'False', value: false }
-      ],
-      previewBefore: `if (a == b) {}`,
-      previewAfterMap: {
-        'true': `if (a === b) {}`,
-        'false': `if (a == b) {}`
-      }
-    },
-    {
-      id: 'json.formatter.indentStyle',
-      titleKey: 'JSON Indent Style',
-      descriptionKey: 'The style of the indentation for JSON files.',
-      type: 'select',
-      options: [
-        { label: 'Tab', value: 'tab' },
-        { label: 'Space', value: 'space' }
-      ],
-      previewBefore: `{\n    "foo": "bar"\n}`,
-      previewAfterMap: {
-        'tab': `{\n\t"foo": "bar"\n}`,
-        'space': `{\n  "foo": "bar"\n}`
-      }
-    },
-    {
-      id: 'css.formatter.indentStyle',
-      titleKey: 'CSS Indent Style',
-      descriptionKey: 'The style of the indentation for CSS files.',
-      type: 'select',
-      options: [
-        { label: 'Tab', value: 'tab' },
-        { label: 'Space', value: 'space' }
-      ],
-      previewBefore: `.box {\n    color: red;\n}`,
-      previewAfterMap: {
-        'tab': `.box {\n\tcolor: red;\n}`,
-        'space': `.box {\n  color: red;\n}`
-      }
-    }
-  ]
+	name: 'Biome',
+	icon: BiomeIcon,
+	defaultFileName: 'biome.json',
+	versions: [
+		{
+			id: '1.x',
+			label: 'v1.x',
+			defaultState: {
+				formatter: {
+					enabled: true,
+					indentStyle: 'tab',
+					indentWidth: 2,
+					lineWidth: 80,
+				},
+				javascript: {
+					formatter: {
+						quoteStyle: 'double',
+						trailingComma: 'all',
+						semicolons: 'always',
+					},
+				},
+				linter: { enabled: true, rules: { recommended: true } },
+			},
+		},
+		{
+			id: '2.x',
+			label: 'v2.x (Latest)',
+			defaultState: {
+				formatter: {
+					enabled: true,
+					indentStyle: 'tab',
+					indentWidth: 2,
+					lineWidth: 80,
+					attributePosition: 'auto',
+				},
+				javascript: {
+					formatter: {
+						quoteStyle: 'double',
+						jsxQuoteStyle: 'double',
+						quoteProperties: 'asNeeded',
+						trailingCommas: 'all',
+						semicolons: 'always',
+						arrowParentheses: 'always',
+						bracketSpacing: true,
+						bracketSameLine: false,
+					},
+				},
+				linter: { enabled: true, rules: { recommended: true } },
+			},
+		},
+	],
+	rules: [
+		{
+			id: 'formatter.indentStyle',
+			titleKey: 'Indent Style',
+			descriptionKey: 'The indent style.',
+			type: 'select',
+			options: [
+				{ label: 'Tab', value: 'tab' },
+				{ label: 'Space', value: 'space' },
+			],
+			previewBefore: `function init() {\n    console.log('hi');\n}`,
+			previewAfterMap: {
+				tab: `function init() {\n\tconsole.log('hi');\n}`,
+				space: `function init() {\n  console.log('hi');\n}`,
+			},
+		},
+		{
+			id: 'formatter.indentWidth',
+			titleKey: 'Indent Width',
+			descriptionKey: 'The size of the indentation.',
+			type: 'number',
+		},
+		{
+			id: 'formatter.lineWidth',
+			titleKey: 'Line Width',
+			descriptionKey: "What's the max width of a line.",
+			type: 'number',
+		},
+		{
+			id: 'formatter.attributePosition',
+			titleKey: 'Attribute Position',
+			descriptionKey: 'The attribute position style.',
+			type: 'select',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'Auto', value: 'auto' },
+				{ label: 'Multiline', value: 'multiline' },
+			],
+			previewBefore: `<div class="a" id="b" />`,
+			previewAfterMap: {
+				auto: `<div class="a" id="b" />`,
+				multiline: `<div\n  class="a"\n  id="b"\n/>`,
+			},
+		},
+		{
+			id: 'javascript.formatter.quoteStyle',
+			titleKey: 'Quote Style',
+			descriptionKey: 'The type of quotes used in JavaScript code.',
+			type: 'select',
+			options: [
+				{ label: 'Double', value: 'double' },
+				{ label: 'Single', value: 'single' },
+			],
+			previewBefore: `const msg = "hello world";`,
+			previewAfterMap: {
+				single: `const msg = 'hello world';`,
+				double: `const msg = "hello world";`,
+			},
+		},
+		{
+			id: 'javascript.formatter.jsxQuoteStyle',
+			titleKey: 'JSX Quote Style',
+			descriptionKey: 'The type of quotes used in JSX.',
+			type: 'select',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'Double', value: 'double' },
+				{ label: 'Single', value: 'single' },
+			],
+			previewBefore: `<div className="test" />`,
+			previewAfterMap: {
+				single: `<div className='test' />`,
+				double: `<div className="test" />`,
+			},
+		},
+		{
+			id: 'javascript.formatter.quoteProperties',
+			titleKey: 'Quote Properties',
+			descriptionKey: 'When properties in objects are quoted.',
+			type: 'select',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'As Needed', value: 'asNeeded' },
+				{ label: 'Preserve', value: 'preserve' },
+			],
+			previewBefore: `const obj = { "a": 1, b: 2 };`,
+			previewAfterMap: {
+				asNeeded: `const obj = { a: 1, b: 2 };`,
+				preserve: `const obj = { "a": 1, b: 2 };`,
+			},
+		},
+		{
+			id: 'javascript.formatter.trailingCommas',
+			titleKey: 'Trailing Commas',
+			descriptionKey: 'Print trailing commas wherever possible.',
+			type: 'select',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'All', value: 'all' },
+				{ label: 'ES5', value: 'es5' },
+				{ label: 'None', value: 'none' },
+			],
+			previewBefore: `const obj = {\n  a: 1,\n  b: 2\n};`,
+			previewAfterMap: {
+				all: `const obj = {\n  a: 1,\n  b: 2,\n};`,
+				es5: `const obj = {\n  a: 1,\n  b: 2,\n};`,
+				none: `const obj = {\n  a: 1,\n  b: 2\n};`,
+			},
+		},
+		{
+			id: 'javascript.formatter.semicolons',
+			titleKey: 'Semicolons',
+			descriptionKey: 'Whether the formatter prints semicolons.',
+			type: 'select',
+			options: [
+				{ label: 'Always', value: 'always' },
+				{ label: 'As Needed', value: 'asNeeded' },
+			],
+			previewBefore: `const a = 1\nconst b = 2`,
+			previewAfterMap: {
+				always: `const a = 1;\nconst b = 2;`,
+				asNeeded: `const a = 1\nconst b = 2`,
+			},
+		},
+		{
+			id: 'javascript.formatter.arrowParentheses',
+			titleKey: 'Arrow Parentheses',
+			descriptionKey:
+				'Whether to add non-necessary parentheses to arrow functions.',
+			type: 'select',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'Always', value: 'always' },
+				{ label: 'As Needed', value: 'asNeeded' },
+			],
+			previewBefore: `const foo = x => x;`,
+			previewAfterMap: {
+				always: `const foo = (x) => x;`,
+				asNeeded: `const foo = x => x;`,
+			},
+		},
+		{
+			id: 'javascript.formatter.bracketSpacing',
+			titleKey: 'Bracket Spacing',
+			descriptionKey:
+				'Whether to insert spaces around brackets in object literals.',
+			type: 'boolean',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'True', value: true },
+				{ label: 'False', value: false },
+			],
+			previewBefore: `const obj = {foo: bar};`,
+			previewAfterMap: {
+				true: `const obj = { foo: bar };`,
+				false: `const obj = {foo: bar};`,
+			},
+		},
+		{
+			id: 'javascript.formatter.bracketSameLine',
+			titleKey: 'Bracket Same Line',
+			descriptionKey:
+				'Whether to hug the closing bracket of multiline HTML/JSX tags to the end of the last line.',
+			type: 'boolean',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'True', value: true },
+				{ label: 'False', value: false },
+			],
+			previewBefore: `<button\n  className="btn"\n>\n  Click\n</button>`,
+			previewAfterMap: {
+				true: `<button\n  className="btn">\n  Click\n</button>`,
+				false: `<button\n  className="btn"\n>\n  Click\n</button>`,
+			},
+		},
+		{
+			id: 'formatter.formatWithErrors',
+			titleKey: 'Format With Errors',
+			descriptionKey: 'Allows to format a document that has syntax errors.',
+			type: 'boolean',
+			options: [
+				{ label: 'True', value: true },
+				{ label: 'False', value: false },
+			],
+			previewBefore: `function foo() {\n  console.log("hello"\n}`,
+			previewAfterMap: {
+				true: `function foo() {\n  console.log("hello");\n}`,
+				false: `function foo() {\n  console.log("hello"\n}`,
+			},
+		},
+		{
+			id: 'formatter.lineEnding',
+			titleKey: 'Line Ending',
+			descriptionKey: 'The type of line ending.',
+			type: 'select',
+			options: [
+				{ label: 'LF', value: 'lf' },
+				{ label: 'CRLF', value: 'crlf' },
+				{ label: 'CR', value: 'cr' },
+			],
+			previewBefore: `line1\\nline2`,
+			previewAfterMap: {
+				lf: `line1\\nline2`,
+				crlf: `line1\\r\\nline2`,
+				cr: `line1\\rline2`,
+			},
+		},
+		{
+			id: 'linter.rules.recommended',
+			titleKey: 'Recommended Rules',
+			descriptionKey: 'Enables the recommended rules for all groups.',
+			type: 'boolean',
+			options: [
+				{ label: 'True', value: true },
+				{ label: 'False', value: false },
+			],
+			previewBefore: `if (a == b) {}`,
+			previewAfterMap: {
+				true: `if (a === b) {}`,
+				false: `if (a == b) {}`,
+			},
+		},
+		{
+			id: 'json.formatter.indentStyle',
+			titleKey: 'JSON Indent Style',
+			descriptionKey: 'The style of the indentation for JSON files.',
+			type: 'select',
+			options: [
+				{ label: 'Tab', value: 'tab' },
+				{ label: 'Space', value: 'space' },
+			],
+			previewBefore: `{\n    "foo": "bar"\n}`,
+			previewAfterMap: {
+				tab: `{\n\t"foo": "bar"\n}`,
+				space: `{\n  "foo": "bar"\n}`,
+			},
+		},
+		{
+			id: 'css.formatter.indentStyle',
+			titleKey: 'CSS Indent Style',
+			descriptionKey: 'The style of the indentation for CSS files.',
+			type: 'select',
+			options: [
+				{ label: 'Tab', value: 'tab' },
+				{ label: 'Space', value: 'space' },
+			],
+			previewBefore: `.box {\n    color: red;\n}`,
+			previewAfterMap: {
+				tab: `.box {\n\tcolor: red;\n}`,
+				space: `.box {\n  color: red;\n}`,
+			},
+		},
+		{
+			id: 'formatter.useEditorconfig',
+			titleKey: 'Use Editorconfig',
+			descriptionKey: 'Whether to use the .editorconfig file if it exists.',
+			type: 'boolean',
+			options: [
+				{ label: 'True', value: true },
+				{ label: 'False', value: false },
+			],
+			previewBefore: `/* Reads .editorconfig */`,
+			previewAfterMap: {
+				true: `/* Applies .editorconfig settings */`,
+				false: `/* Ignores .editorconfig settings */`,
+			},
+		},
+		{
+			id: 'html.formatter.indentScriptAndStyle',
+			titleKey: 'Indent Script and Style Tags',
+			descriptionKey:
+				'Whether or not to indent the code inside <script> and <style> tags in HTML files.',
+			type: 'boolean',
+			supportedVersions: ['2.x'],
+			options: [
+				{ label: 'True', value: true },
+				{ label: 'False', value: false },
+			],
+			previewBefore: `<script>\nconsole.log(1);\n</script>`,
+			previewAfterMap: {
+				true: `<script>\n  console.log(1);\n</script>`,
+				false: `<script>\nconsole.log(1);\n</script>`,
+			},
+		},
+	],
 };
