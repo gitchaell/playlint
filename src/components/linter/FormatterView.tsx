@@ -1,6 +1,7 @@
 import { ArrowRight, ChevronDown, Info } from 'lucide-react';
 import type React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { codeToHtml } from 'shiki';
 import { type LangCode, useTranslations } from '../../i18n/utils';
 import { type ConfigEngine, ENGINES } from './rules';
 
@@ -32,29 +33,20 @@ export function FormatterView({
 
 	return (
 		<section className='flex-1 flex flex-col overflow-hidden border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 h-full'>
-			<div className='flex-1 overflow-y-auto px-12 py-12 scroll-smooth'>
+			<div className='flex-1 overflow-y-auto px-4 md:px-12 py-6 md:py-12 scroll-smooth'>
 				<div className='max-w-3xl'>
 					<div className='mb-12'>
-						<div className='flex items-center gap-2 mb-4'>
-							<span className='text-[10px] font-mono bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded uppercase'>
-								{engineDef.name}
-							</span>
-							<span className='text-zinc-400 dark:text-zinc-700 text-xs'>
-								/
-							</span>
-							<span className='text-[10px] font-mono bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded uppercase'>
-								{activeVersion}
-							</span>
-							<span className='text-zinc-400 dark:text-zinc-700 text-xs'>
-								/
-							</span>
-							<span className='text-[10px] font-mono bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded'>
-								CONFIGURATION
-							</span>
-						</div>
-						<h1 className='text-4xl font-bold tracking-tight text-zinc-900 dark:text-white mb-4 font-title'>
+						<h1 className='text-4xl font-bold tracking-tight text-zinc-900 dark:text-white mb-2 font-title'>
 							{engineDef.name} {t('linter.config')}
 						</h1>
+						<div className='flex items-center gap-3 mb-6'>
+							<span className='text-[10px] font-mono bg-[#8a95ff]/10 text-[#8a95ff] px-2.5 py-1 rounded-md uppercase tracking-wider font-bold'>
+								v{activeVersion}
+							</span>
+							<span className='text-[10px] font-mono bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 px-2.5 py-1 rounded-md uppercase tracking-wider font-bold'>
+								{activeRules.length} Rules Configured
+							</span>
+						</div>
 						<p className='text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed max-w-xl font-sans'>
 							{t('linter.description')}
 						</p>
@@ -76,11 +68,6 @@ export function FormatterView({
 							const currentPreview = hasPreview
 								? rule.previewAfterMap![String(currentValue)]
 								: null;
-
-							const renderWhitespace = (str: string | null | undefined) => {
-								if (!str) return str;
-								return str.replace(/ /g, '·').replace(/\t/g, '→\t');
-							};
 
 							return (
 								<RuleCard
@@ -124,29 +111,7 @@ export function FormatterView({
 
 										{/* Code Preview */}
 										{hasPreview && (
-											<div className='bg-zinc-100 dark:bg-zinc-900/80 rounded-xl border border-zinc-200 dark:border-zinc-800/80 mt-2 relative overflow-hidden flex flex-col sm:flex-row'>
-												{/* Before */}
-												<div className='flex-1 border-b sm:border-b-0 sm:border-r border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/50'>
-													<div className='px-4 py-2 bg-zinc-200/50 dark:bg-zinc-800/50 border-b border-zinc-200/50 dark:border-zinc-800/80 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2'>
-														<span className='w-1.5 h-1.5 rounded-full bg-zinc-400'></span>{' '}
-														Before
-													</div>
-													<pre className='p-4 text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap font-mono leading-relaxed'>
-														{renderWhitespace(rule.previewBefore)}
-													</pre>
-												</div>
-
-												{/* After */}
-												<div className='flex-1 bg-zinc-50 dark:bg-zinc-900/30'>
-													<div className='px-4 py-2 bg-zinc-100/50 dark:bg-zinc-800/30 border-b border-zinc-200/50 dark:border-zinc-800/50 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2'>
-														<span className='w-1.5 h-1.5 rounded-full bg-[#8a95ff]'></span>{' '}
-														After
-													</div>
-													<pre className='p-4 text-xs text-zinc-800 dark:text-zinc-300 whitespace-pre-wrap font-mono leading-relaxed'>
-														{renderWhitespace(currentPreview)}
-													</pre>
-												</div>
-											</div>
+											<ShikiPreview before={rule.previewBefore || ''} after={currentPreview || ''} engine={activeEngine} />
 										)}
 									</div>
 								</RuleCard>
@@ -183,6 +148,73 @@ export function FormatterView({
 	);
 }
 
+function ShikiPreview({ before, after, engine }: { before: string; after: string; engine: string }) {
+	const [htmlBefore, setHtmlBefore] = useState<string>('');
+	const [htmlAfter, setHtmlAfter] = useState<string>('');
+
+	useEffect(() => {
+		const renderCode = async () => {
+			const lang = engine.toLowerCase() === 'stylelint' ? 'css' : 'javascript';
+			const processText = (text: string) => text.replace(/ /g, '·').replace(/\t/g, '→\t');
+
+			try {
+				const beforeStr = processText(before);
+				const hBefore = await codeToHtml(beforeStr, {
+					lang,
+					themes: {
+						light: 'github-light',
+						dark: 'github-dark',
+					},
+				});
+				setHtmlBefore(hBefore);
+
+				const afterStr = processText(after);
+				const hAfter = await codeToHtml(afterStr, {
+					lang,
+					themes: {
+						light: 'github-light',
+						dark: 'github-dark',
+					},
+				});
+				setHtmlAfter(hAfter);
+			} catch (e) {
+				console.error(e);
+				setHtmlBefore(`<pre><code>${processText(before)}</code></pre>`);
+				setHtmlAfter(`<pre><code>${processText(after)}</code></pre>`);
+			}
+		};
+		renderCode();
+	}, [before, after, engine]);
+
+	return (
+		<div className='bg-zinc-100 dark:bg-zinc-900/80 rounded-xl border border-zinc-200 dark:border-zinc-800/80 mt-2 relative overflow-hidden flex flex-col sm:flex-row'>
+			{/* Before */}
+			<div className='flex-1 border-b sm:border-b-0 sm:border-r border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/50'>
+				<div className='px-4 py-2 bg-zinc-200/50 dark:bg-zinc-800/50 border-b border-zinc-200/50 dark:border-zinc-800/80 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2'>
+					<span className='w-1.5 h-1.5 rounded-full bg-zinc-400'></span>{' '}
+					Before
+				</div>
+				<div
+					className='p-4 text-xs whitespace-pre-wrap font-mono leading-relaxed [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0 opacity-80'
+					dangerouslySetInnerHTML={{ __html: htmlBefore }}
+				/>
+			</div>
+
+			{/* After */}
+			<div className='flex-1 bg-zinc-50 dark:bg-zinc-900/30'>
+				<div className='px-4 py-2 bg-zinc-100/50 dark:bg-zinc-800/30 border-b border-zinc-200/50 dark:border-zinc-800/50 text-[10px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 font-sans font-bold flex items-center gap-2'>
+					<span className='w-1.5 h-1.5 rounded-full bg-[#8a95ff]'></span>{' '}
+					After
+				</div>
+				<div
+					className='p-4 text-xs whitespace-pre-wrap font-mono leading-relaxed [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0'
+					dangerouslySetInnerHTML={{ __html: htmlAfter }}
+				/>
+			</div>
+		</div>
+	);
+}
+
 function RuleCard({
 	title,
 	configKey,
@@ -205,12 +237,12 @@ function RuleCard({
 			onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
 		>
 			<summary className='flex justify-between items-center p-6 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors list-none [&::-webkit-details-marker]:hidden select-none'>
-				<div>
-					<h3 className='text-lg font-bold text-zinc-900 dark:text-white mb-1.5 font-title'>
+				<div className='min-w-0 pr-4'>
+					<h3 className='text-lg font-bold text-zinc-900 dark:text-white mb-1.5 font-title truncate'>
 						{title}
 					</h3>
-					<div className='flex items-center gap-3'>
-						<code className='text-[10px] font-mono bg-zinc-100 dark:bg-zinc-950 px-2 py-0.5 rounded text-zinc-500 tracking-wider border border-zinc-200 dark:border-zinc-800/50'>
+					<div className='flex items-center gap-3 flex-wrap'>
+						<code className='text-[10px] font-mono bg-zinc-100 dark:bg-zinc-950 px-2 py-0.5 rounded text-zinc-500 tracking-wider border border-zinc-200 dark:border-zinc-800/50 break-all'>
 							{configKey}
 						</code>
 						{description && (

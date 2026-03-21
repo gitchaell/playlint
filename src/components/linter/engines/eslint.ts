@@ -21,6 +21,7 @@ export const ESLintConfig: EngineConfig = {
 					'no-console': 'off',
 					curly: ['error', 'all'],
 					'brace-style': ['error', '1tbs'],
+					'max-len': ['error', { code: 80 }],
 				},
 			},
 		},
@@ -40,6 +41,7 @@ export const ESLintConfig: EngineConfig = {
 					'no-console': 'off',
 					curly: ['error', 'all'],
 					'brace-style': ['error', '1tbs'],
+					'max-len': ['error', { code: 80 }],
 				},
 			},
 		},
@@ -214,6 +216,12 @@ export const ESLintConfig: EngineConfig = {
 				warn: `for (let i = 0; i < 10; i--) {\n} // ⚠️ Warning`,
 				off: `for (let i = 0; i < 10; i--) {\n} // ✅ Ignored`,
 			},
+		},
+		{
+			id: 'rules.max-len.1.code',
+			titleKey: 'Max Length',
+			descriptionKey: 'Enforce a maximum line length.',
+			type: 'number',
 		},
 	],
 };

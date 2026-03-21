@@ -137,7 +137,7 @@ export function CodePreview({
 	}, [configState]);
 
 	return (
-		<section className='w-full h-full bg-[#1e1e1e] flex flex-col font-mono text-[#d4d4d4]'>
+		<section className='w-full h-full bg-[#1e1e1e] flex flex-col font-mono text-[#d4d4d4]' style={{ fontFamily: 'var(--font-mono)' }}>
 			<div className='h-14 border-b border-[#2d2d2d] flex items-center justify-between px-6 bg-[#1e1e1e] shrink-0'>
 				<div className='flex items-center gap-2 truncate pr-4 opacity-80'>
 					<Code2 className='w-4 h-4 text-[#8a95ff] shrink-0' />
