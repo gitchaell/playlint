@@ -52,7 +52,7 @@ export function TopBar() {
     <header className="bg-white dark:bg-zinc-950 flex justify-between items-center w-full px-6 h-16 border-b border-zinc-200 dark:border-zinc-800 z-50 text-sm tracking-tight sticky top-0 shrink-0">
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-2">
-          <Asterisk className="w-6 h-6 text-zinc-900 dark:text-white" />
+          <img src="/favicon.svg" alt="PlayLint Logo" className="w-6 h-6 dark:invert" />
           <span className="text-xl font-bold tracking-tighter text-zinc-900 dark:text-white font-title">PlayLint</span>
         </div>
       </div>

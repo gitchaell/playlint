@@ -11,9 +11,10 @@ import Loader from '@/components/primitives/Loader.astro';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Loading...</title>
-		<meta http-equiv="refresh" content="0;url=/en" />
 		<script is:inline>
-			window.location.href = "/en";
+			setTimeout(() => {
+				window.location.href = "/en";
+			}, 2000);
 		</script>
 	</head>
 	<body

@@ -24,14 +24,14 @@ export function Sidebar({ lang, activeEngine, activeVersion, onSelectEngine, onS
   const activeEngineDef = ENGINES[activeEngine];
 
   return (
-    <aside className="w-full h-full bg-zinc-950 flex flex-col p-4 z-40 overflow-hidden">
+    <aside className="w-full h-full bg-zinc-50 dark:bg-zinc-950 flex flex-col p-4 z-40 overflow-hidden border-r border-zinc-200 dark:border-zinc-800">
       <div className="mb-6 px-2 flex items-center justify-between">
         <div className="flex items-center gap-3 w-full">
-          <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center border border-zinc-800 shrink-0">
-            <Settings2 className="text-white w-5 h-5" />
+          <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-900 rounded-lg flex items-center justify-center border border-zinc-200 dark:border-zinc-800 shrink-0">
+            <Settings2 className="text-zinc-900 dark:text-white w-5 h-5" />
           </div>
           <div className="truncate flex-1">
-            <h2 className="text-white font-black text-sm uppercase tracking-tight leading-none font-title truncate">{t('linter.config')}</h2>
+            <h2 className="text-zinc-900 dark:text-white font-black text-sm uppercase tracking-tight leading-none font-title truncate">{t('linter.config')}</h2>
             <div className="relative mt-1">
               <select
                 value={activeVersion}
@@ -49,7 +49,7 @@ export function Sidebar({ lang, activeEngine, activeVersion, onSelectEngine, onS
 
       <button
         onClick={onAddConfig}
-        className="w-full flex items-center justify-center gap-2 bg-white text-black font-bold py-2.5 rounded-lg text-xs hover:bg-zinc-200 transition-all mb-6 font-title shrink-0"
+        className="w-full flex items-center justify-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold py-2.5 rounded-lg text-xs hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all mb-6 font-title shrink-0"
       >
         <Plus className="w-4 h-4 shrink-0" />
         <span className="truncate">{t('linter.addConfig')}</span>
@@ -65,8 +65,8 @@ export function Sidebar({ lang, activeEngine, activeVersion, onSelectEngine, onS
                 onClick={() => onSelectEngine(engine.name as ConfigEngine)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${
                   isActive
-                    ? 'bg-zinc-900 text-white font-bold'
-                    : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50 scale-95 duration-75'
+                    ? 'bg-zinc-200 dark:bg-zinc-900 text-zinc-900 dark:text-white font-bold'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900/50 scale-95 duration-75'
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -77,16 +77,16 @@ export function Sidebar({ lang, activeEngine, activeVersion, onSelectEngine, onS
         })}
       </nav>
 
-      <div className="mt-auto pt-4 border-t border-zinc-800 space-y-1 shrink-0">
-        <button className="w-full flex items-center gap-3 px-3 py-2 text-zinc-500 hover:text-zinc-300 transition-all text-xs truncate">
+      <div className="mt-auto pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-1 shrink-0">
+        <button onClick={() => alert('Feature coming soon')} className="w-full flex items-center gap-3 px-3 py-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-all text-xs truncate">
           <History className="w-4 h-4 shrink-0" />
           <span className="truncate">{t('linter.versions')}</span>
         </button>
-        <button className="w-full flex items-center gap-3 px-3 py-2 text-zinc-500 hover:text-zinc-300 transition-all text-xs truncate">
+        <button onClick={() => alert('Feature coming soon')} className="w-full flex items-center gap-3 px-3 py-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-all text-xs truncate">
           <RotateCcw className="w-4 h-4 shrink-0" />
           <span className="truncate">{t('linter.history')}</span>
         </button>
-        <button className="w-full mt-4 bg-zinc-900 text-white font-bold py-2.5 rounded-lg text-xs hover:bg-zinc-800 border border-zinc-800 transition-colors font-title truncate">
+        <button onClick={() => alert('Feature coming soon')} className="w-full mt-4 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold py-2.5 rounded-lg text-xs hover:bg-zinc-800 dark:hover:bg-zinc-200 border border-zinc-800 transition-colors font-title truncate">
           {t('linter.exportConfig')}
         </button>
       </div>
