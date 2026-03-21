@@ -1,7 +1,7 @@
 import { defaultLang, ui } from './ui';
 
 export type LangCode = keyof typeof ui;
-export type UiKey = keyof typeof ui[typeof defaultLang];
+export type UiKey = keyof (typeof ui)[typeof defaultLang];
 
 export function useTranslations(lang: LangCode | string) {
 	const validLang = (lang in ui ? lang : defaultLang) as LangCode;

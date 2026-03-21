@@ -1,6 +1,6 @@
 ---
-import LinterLayout from '../../layouts/LinterLayout.astro';
 import { LinterConfigApp } from '../../components/linter/LinterConfigApp';
+import LinterLayout from '../../layouts/LinterLayout.astro';
 
 export function getStaticPaths() {
 	return [
@@ -8,7 +8,7 @@ export function getStaticPaths() {
 		{ params: { lang: 'es' } },
 		{ params: { lang: 'de' } },
 		{ params: { lang: 'ja' } },
-		{ params: { lang: 'ko' } }
+		{ params: { lang: 'ko' } },
 	];
 }
 ---
