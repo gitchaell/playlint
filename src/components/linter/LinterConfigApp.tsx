@@ -94,38 +94,72 @@ export function LinterConfigApp({ lang }: { lang: string }) {
 	const currentVersionId = activeVersions[activeEngine];
 	const currentState = states[activeEngine][currentVersionId];
 
+	// Mobile tab state
+	const [activeMobileTab, setActiveMobileTab] = useState<'sidebar' | 'editor' | 'preview'>('editor');
+
 	return (
 		<div className='bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white selection:bg-zinc-300 dark:selection:bg-zinc-800 h-screen overflow-hidden flex flex-col font-sans'>
 			<TopBar />
 
 			{/* Mobile Layout */}
-			<div className='flex flex-col md:hidden flex-1 overflow-y-auto w-full gap-4 p-4'>
-				<div className='min-h-[300px] border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-900 shadow-sm shrink-0'>
-					<Sidebar
-						lang={lang}
-						activeEngine={activeEngine}
-						activeVersion={currentVersionId}
-						onSelectEngine={handleEngineChange}
-						onSelectVersion={handleVersionChange}
-						onAddConfig={() => setIsModalOpen(true)}
-					/>
+			<div className='flex flex-col md:hidden flex-1 overflow-hidden w-full'>
+				{/* Mobile Tabs Header */}
+				<div className='flex border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shrink-0 overflow-x-auto'>
+					<button
+						onClick={() => setActiveMobileTab('sidebar')}
+						className={`flex-1 py-3 px-4 text-xs font-bold font-title whitespace-nowrap transition-colors ${activeMobileTab === 'sidebar' ? 'text-zinc-900 dark:text-white border-b-2 border-[#8a95ff]' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}
+					>
+						Files
+					</button>
+					<button
+						onClick={() => setActiveMobileTab('editor')}
+						className={`flex-1 py-3 px-4 text-xs font-bold font-title whitespace-nowrap transition-colors ${activeMobileTab === 'editor' ? 'text-zinc-900 dark:text-white border-b-2 border-[#8a95ff]' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}
+					>
+						Configuration
+					</button>
+					<button
+						onClick={() => setActiveMobileTab('preview')}
+						className={`flex-1 py-3 px-4 text-xs font-bold font-title whitespace-nowrap transition-colors ${activeMobileTab === 'preview' ? 'text-zinc-900 dark:text-white border-b-2 border-[#8a95ff]' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}
+					>
+						Code Preview
+					</button>
 				</div>
-				<div className='min-h-[500px] border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-900 shadow-sm shrink-0'>
-					<FormatterView
-						lang={lang}
-						activeEngine={activeEngine}
-						activeVersion={currentVersionId}
-						configState={currentState}
-						onSettingChange={handleSettingChange}
-						onResetDefaults={handleResetDefaults}
-					/>
-				</div>
-				<div className='min-h-[400px] border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-zinc-900 shadow-sm shrink-0'>
-					<CodePreview
-						lang={lang}
-						activeFile={ENGINES[activeEngine].defaultFileName}
-						configState={currentState}
-					/>
+
+				{/* Mobile Tab Content */}
+				<div className='flex-1 overflow-hidden relative'>
+					{activeMobileTab === 'sidebar' && (
+						<div className='absolute inset-0 overflow-y-auto bg-white dark:bg-zinc-900'>
+							<Sidebar
+								lang={lang}
+								activeEngine={activeEngine}
+								activeVersion={currentVersionId}
+								onSelectEngine={handleEngineChange}
+								onSelectVersion={handleVersionChange}
+								onAddConfig={() => setIsModalOpen(true)}
+							/>
+						</div>
+					)}
+					{activeMobileTab === 'editor' && (
+						<div className='absolute inset-0 overflow-y-auto bg-white dark:bg-zinc-900'>
+							<FormatterView
+								lang={lang}
+								activeEngine={activeEngine}
+								activeVersion={currentVersionId}
+								configState={currentState}
+								onSettingChange={handleSettingChange}
+								onResetDefaults={handleResetDefaults}
+							/>
+						</div>
+					)}
+					{activeMobileTab === 'preview' && (
+						<div className='absolute inset-0 bg-zinc-900'>
+							<CodePreview
+								lang={lang}
+								activeFile={ENGINES[activeEngine].defaultFileName}
+								configState={currentState}
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 

@@ -1,29 +1,35 @@
 import type React from 'react';
 export const PrettierIcon = (props: React.SVGProps<SVGSVGElement>) => (
-	<svg
-		viewBox='0 0 256 256'
-		fill='none'
-		xmlns='http://www.w3.org/2000/svg'
-		{...props}
-	>
-		<path
-			d='M217.228 128C217.228 177.279 177.279 217.228 128 217.228C78.7212 217.228 38.772 177.279 38.772 128C38.772 78.7212 78.7212 38.772 128 38.772'
-			stroke='currentColor'
-			strokeWidth='24.4714'
-			strokeLinecap='round'
-		/>
-		<path
-			d='M128 217.228C177.279 217.228 217.228 177.279 217.228 128C217.228 78.7212 177.279 38.772 128 38.772C101.402 38.772 77.5218 50.4103 61.4285 68.8048'
-			stroke='currentColor'
-			strokeWidth='24.4714'
-			strokeLinecap='round'
-		/>
-		<path
-			d='M152.057 186.04L202.937 136.035M202.937 136.035L152.057 86.0298M202.937 136.035H100.916C82.179 136.035 66.9922 120.848 66.9922 102.111C66.9922 83.3741 82.179 68.1873 100.916 68.1873H105.155'
-			stroke='currentColor'
-			strokeWidth='24.4714'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-		/>
-	</svg>
+	<>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 210" {...props} className={`dark:hidden ${props.className || ''}`}>
+			<g fill="none" fillRule="evenodd">
+				<g transform="translate(0 200)"><rect width="60" height="10" x="150" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="70" height="10" x="70" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="60" height="10" fill="#EA5E5E" rx="5"/></g>
+				<g transform="translate(0 180)"><rect width="50" height="10" x="160" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="20" height="10" x="130" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="50" height="10" x="70" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="20" height="10" x="40" fill="#F7B93E" rx="5"/><rect width="30" height="10" fill="#56B3B4" rx="5"/></g>
+				<g transform="translate(0 160)"><rect width="100" height="10" x="110" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="30" height="10" x="70" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="60" height="10" fill="#BF85BF" rx="5"/></g>
+				<g transform="translate(0 140)"><rect width="30" height="10" x="180" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="30" height="10" x="140" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="100" height="10" x="30" fill="#F7B93E" rx="5"/><rect width="20" height="10" fill="#BF85BF" rx="5"/></g>
+				<g transform="translate(0 120)"><rect width="40" height="10" x="170" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="40" height="10" x="120" fill="#BF85BF" rx="5"/><rect width="50" height="10" x="60" fill="#EA5E5E" rx="5"/><rect width="50" height="10" fill="#56B3B4" rx="5"/></g>
+				<g transform="translate(0 100)"><rect width="30" height="10" x="180" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="90" height="10" x="80" fill="#56B3B4" rx="5"/><rect width="40" height="10" x="30" fill="#F7B93E" rx="5"/><rect width="20" height="10" fill="#EA5E5E" rx="5"/></g>
+				<g transform="translate(0 80)"><rect width="20" height="10" x="190" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="60" height="10" x="120" fill="#F7B93E" rx="5"/><rect width="40" height="10" x="70" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="60" height="10" fill="#BF85BF" rx="5"/></g>
+				<g transform="translate(0 60)"><rect width="20" height="10" x="190" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="60" height="10" x="120" fill="#EA5E5E" rx="5"/><rect width="40" height="10" x="70" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="20" height="10" x="40" fill="#56B3B4" rx="5"/><rect width="30" height="10" fill="#F7B93E" rx="5"/></g>
+				<g transform="translate(0 40)"><rect width="30" height="10" x="180" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="20" height="10" x="150" fill="#56B3B4" rx="5"/><rect width="50" height="10" x="90" fill="#BF85BF" rx="5"/><rect width="80" height="10" fill="#56B3B4" rx="5"/></g>
+				<g transform="translate(0 20)"><rect width="40" height="10" x="170" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="110" height="10" x="50" fill="#F7B93E" rx="5"/><rect width="40" height="10" fill="#EA5E5E" rx="5"/></g>
+				<rect width="70" height="10" x="140" fill="#CFD4D7" opacity=".5" rx="5"/><rect width="130" height="10" fill="#56B3B4" rx="5"/>
+			</g>
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 210" {...props} className={`hidden dark:block ${props.className || ''}`}>
+			<g fill="none" fillRule="evenodd">
+				<g transform="translate(0 200)"><rect width="60" height="10" x="150" fill="#4D616E" opacity=".5" rx="5"/><rect width="70" height="10" x="70" fill="#4D616E" opacity=".5" rx="5"/><rect width="60" height="10" fill="#EA5E5E" rx="5"/></g>
+				<g transform="translate(0 180)"><rect width="50" height="10" x="160" fill="#4D616E" opacity=".5" rx="5"/><rect width="20" height="10" x="130" fill="#4D616E" opacity=".5" rx="5"/><rect width="50" height="10" x="70" fill="#4D616E" opacity=".5" rx="5"/><rect width="20" height="10" x="40" fill="#F7B93E" rx="5"/><rect width="30" height="10" fill="#56B3B4" rx="5"/></g>
+				<g transform="translate(0 160)"><rect width="100" height="10" x="110" fill="#4D616E" opacity=".5" rx="5"/><rect width="30" height="10" x="70" fill="#4D616E" opacity=".5" rx="5"/><rect width="60" height="10" fill="#BF85BF" rx="5"/></g>
+				<g transform="translate(0 140)"><rect width="30" height="10" x="180" fill="#4D616E" opacity=".5" rx="5"/><rect width="30" height="10" x="140" fill="#4D616E" opacity=".5" rx="5"/><rect width="100" height="10" x="30" fill="#F7B93E" rx="5"/><rect width="20" height="10" fill="#BF85BF" rx="5"/></g>
+				<g transform="translate(0 120)"><rect width="40" height="10" x="170" fill="#4D616E" opacity=".5" rx="5"/><rect width="40" height="10" x="120" fill="#BF85BF" rx="5"/><rect width="50" height="10" x="60" fill="#EA5E5E" rx="5"/><rect width="50" height="10" fill="#56B3B4" rx="5"/></g>
+				<g transform="translate(0 100)"><rect width="30" height="10" x="180" fill="#4D616E" opacity=".5" rx="5"/><rect width="90" height="10" x="80" fill="#56B3B4" rx="5"/><rect width="40" height="10" x="30" fill="#F7B93E" rx="5"/><rect width="20" height="10" fill="#EA5E5E" rx="5"/></g>
+				<g transform="translate(0 80)"><rect width="20" height="10" x="190" fill="#4D616E" opacity=".5" rx="5"/><rect width="60" height="10" x="120" fill="#F7B93E" rx="5"/><rect width="40" height="10" x="70" fill="#4D616E" opacity=".5" rx="5"/><rect width="60" height="10" fill="#BF85BF" rx="5"/></g>
+				<g transform="translate(0 60)"><rect width="20" height="10" x="190" fill="#4D616E" opacity=".5" rx="5"/><rect width="60" height="10" x="120" fill="#EA5E5E" rx="5"/><rect width="40" height="10" x="70" fill="#4D616E" opacity=".5" rx="5"/><rect width="20" height="10" x="40" fill="#56B3B4" rx="5"/><rect width="30" height="10" fill="#F7B93E" rx="5"/></g>
+				<g transform="translate(0 40)"><rect width="30" height="10" x="180" fill="#4D616E" opacity=".5" rx="5"/><rect width="20" height="10" x="150" fill="#56B3B4" rx="5"/><rect width="50" height="10" x="90" fill="#BF85BF" rx="5"/><rect width="80" height="10" fill="#56B3B4" rx="5"/></g>
+				<g transform="translate(0 20)"><rect width="40" height="10" x="170" fill="#4D616E" opacity=".5" rx="5"/><rect width="110" height="10" x="50" fill="#F7B93E" rx="5"/><rect width="40" height="10" fill="#EA5E5E" rx="5"/></g>
+				<rect width="70" height="10" x="140" fill="#4D616E" opacity=".5" rx="5"/><rect width="130" height="10" fill="#56B3B4" rx="5"/>
+			</g>
+		</svg>
+	</>
 );
